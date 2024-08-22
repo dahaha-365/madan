@@ -193,6 +193,7 @@ function uploadImage(file, cb) {
         .fileUpload(base64Content, file)
         .then((url) => {
           console.log(url)
+          // eslint-disable-next-line ts/no-unused-expressions
           cb ? cb(url) : uploaded(url)
         })
         .catch((err) => {
