@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick } from 'vue'
+import { nextTick, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
 import { EmojiButton } from '@joeattardi/emoji-button'
@@ -156,7 +156,9 @@ function copy() {
   }, 350)
 }
 
-const picker = new EmojiButton()
+const picker = new EmojiButton({
+  theme: isDark.value ? `dark` : `light`,
+})
 
 picker.on(`emoji`, (selection) => {
   // alert(`"emoji" event fired, emoji is ${selection.emoji} with name ${selection.name}`);
@@ -166,6 +168,15 @@ picker.on(`emoji`, (selection) => {
 function toggleEmoji(event) {
   picker.togglePicker(event.target)
 }
+
+watch(isDark, (newValue) => {
+  if (newValue) {
+    picker.setTheme(`dark`)
+  }
+  else {
+    picker.setTheme(`light`)
+  }
+})
 </script>
 
 <template>
