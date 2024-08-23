@@ -25,6 +25,7 @@ import { useStore } from '@/stores'
 
 const emit = defineEmits([
   `addFormat`,
+  `addEmoji`,
   `formatContent`,
   `startCopy`,
   `endCopy`,
@@ -155,8 +156,11 @@ function copy() {
   }, 350)
 }
 
-const picker = new EmojiButton({
-  position: `bottom-start`,
+const picker = new EmojiButton()
+
+picker.on(`emoji`, (selection) => {
+  // alert(`"emoji" event fired, emoji is ${selection.emoji} with name ${selection.name}`);
+  emit(`addEmoji`, selection.emoji)
 })
 
 function toggleEmoji(event) {
@@ -194,17 +198,8 @@ function toggleEmoji(event) {
       </DropdownMenu>
       <EditDropdown />
       <StyleDropdown />
-      <DropdownMenu trigger="click" @click.stop="toggleEmoji">
-        <DropdownMenuTrigger>
-          😀Emoji键盘
-          <el-icon class="ml-2">
-            <ElIconArrowDown />
-          </el-icon>
-        </DropdownMenuTrigger>
-      </DropdownMenu>
-      <el-button class="emojiTrigger" link @click.stop="toggleEmoji">
-        😀Emoji键盘
-        <el-icon class="ml-2">
+      <el-button class="emojiTrigger" size="large" link @click="toggleEmoji">
+        😀Emoji键盘<el-icon class="ml-2">
           <ElIconArrowDown />
         </el-icon>
       </el-button>

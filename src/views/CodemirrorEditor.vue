@@ -313,6 +313,10 @@ function addFormat(cmd) {
   editor.value.options.extraKeys[cmd](editor.value)
 }
 
+function addEmoji(char) {
+  editor.value.doc.replaceRange(char, editor.value.doc.getCursor())
+}
+
 const codeMirrorWrapper = ref(null)
 
 // 转换 markdown 中的本地图片为线上图片
@@ -428,6 +432,7 @@ onMounted(() => {
       <el-header class="editor__header">
         <EditorHeader
           @add-format="addFormat"
+          @add-emoji="addEmoji"
           @format-content="formatContent"
           @start-copy="startCopy"
           @end-copy="endCopy"
