@@ -14,7 +14,6 @@ export default {
       'display': `table`,
       'margin': `2em auto 1em`,
       'padding': `0 1em`,
-      'border-bottom': `2px solid rgba(0, 152, 116, 0.9)`,
       'color': `var(--el-text-color-regular)`,
     },
 
@@ -48,6 +47,10 @@ export default {
       'margin': `2em 8px 0.5em`,
       'color': `rgba(66, 185, 131, 0.9)`,
     },
+
+    h5: {},
+
+    h6: {},
 
     // 段落样式
     p: {
@@ -189,5 +192,19 @@ export default {
       'color': `#888`,
       'font-size': `0.8em`,
     },
+  },
+  custom(options) {
+    console.log(this)
+    console.log(options)
+    if (options?.fontSize) {
+      this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
+      this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
+      this.block.h3 = { ...this.block.h3, ...{ 'font-size': `${options.fontSize * 1.5}px` } }
+      this.block.h4 = { ...this.block.h4, ...{ 'font-size': `${options.fontSize * 1.4}px` } }
+      this.block.h5 = { ...this.block.h5, ...{ 'font-size': `${options.fontSize * 1.3}px` } }
+      this.block.h6 = { ...this.block.h6, ...{ 'font-size': `${options.fontSize * 1.2}px` } }
+    }
+    console.log(`output`, this)
+    return this
   },
 }

@@ -1,5 +1,6 @@
 const baseColor = `#3f3f3f`
-const baseBorderColor = `rgba(215, 16, 166, 0.8)`
+// no-unused-vars
+const _baseBorderColor = `rgba(215, 16, 166, 0.8)`
 
 export default {
   BASE: {
@@ -14,7 +15,7 @@ export default {
       'display': `table`,
       'margin': `2em auto 1em`,
       'padding': `0.5em 1em`,
-      'border-bottom': `2px solid ${baseBorderColor}`,
+      'border-bottom': `2px solid \${baseBorderColor}`,
       'color': `var(--el-text-color-regular)`,
       'text-shadow': `2px 2px 4px rgba(0,0,0,0.1)`,
       'transition': `all 0.3s ease`,
@@ -31,8 +32,7 @@ export default {
       'display': `table`,
       'margin': `4em auto 2em`,
       'padding': `0.3em 1em`,
-      'background': `${baseBorderColor}`,
-      'color': `#fff`,
+      'background': `\${baseBorderColor}`,
       'border-radius': `8px`,
       'box-shadow': `0 4px 6px rgba(0,0,0,0.1)`,
       'transition': `all 0.3s ease`,
@@ -48,8 +48,8 @@ export default {
       'margin': `2em 8px 0.75em 0`,
       'line-height': `1.2`,
       'padding-left': `12px`,
-      'border-left': `4px solid ${baseBorderColor}`,
-      'border-bottom': `1px solid ${baseBorderColor}`,
+      'border-left': `4px solid \${baseBorderColor}`,
+      'border-bottom': `1px solid \${baseBorderColor}`,
       'color': `var(--el-text-color-regular)`,
       'transition': `all 0.3s ease`,
       '&:hover': {
@@ -82,7 +82,7 @@ export default {
 
     'blockquote': {
       'font-style': `italic`,
-      'border-left': `4px solid ${baseBorderColor}`,
+      'border-left': `4px solid \${baseBorderColor}`,
       'padding': `1em 1em 1em 2em`,
       'border-radius': `6px`,
       'color': `rgba(0,0,0,0.6)`,

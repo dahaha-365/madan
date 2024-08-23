@@ -10,16 +10,22 @@ export function addPrefix(str) {
 }
 
 function createCustomTheme(theme, color, isDefault = true) {
+  // console.log('createCustomTheme.theme', theme)
   const customTheme = JSON.parse(JSON.stringify(theme))
-  customTheme.block.h1[`border-bottom`] = `2px solid ${color}`
-  customTheme.block.h2.background = color
-  customTheme.block.h3[`border-left`] = `3px solid ${color}`
-  customTheme.block.h4.color = color
+  if (typeof theme?.custom === `function`) {
+    // console.log('color', color)
+    return theme.custom.call(JSON.parse(JSON.stringify(customTheme)), { color })
+  }
+  // console.log('createCustomTheme.customTheme', customTheme)
+  // customTheme.block.h1[`border-bottom`] = `2px solid ${color}`
+  // customTheme.block.h2.background = color
+  // customTheme.block.h3[`border-left`] = `3px solid ${color}`
+  // customTheme.block.h4.color = color
   customTheme.inline.strong.color = color
 
   if (!isDefault) {
-    customTheme.block.h3[`border-bottom`] = `1px dashed ${color}`
-    customTheme.block.blockquote[`border-left`] = `4px solid ${color}`
+    // customTheme.block.h3[`border-bottom`] = `1px dashed ${color}`
+    // customTheme.block.blockquote[`border-left`] = `4px solid ${color}`
   }
 
   return customTheme
@@ -27,12 +33,23 @@ function createCustomTheme(theme, color, isDefault = true) {
 
 // 设置自定义颜色
 export function setColorWithTemplate(theme) {
+  // console.log('setColorWithTemplate', theme)
+  if (typeof theme?.custom === `function`) {
+    // console.log('color', color)
+    /* global color */
+    return theme.custom.call(JSON.parse(JSON.stringify(theme)), { color })
+  }
   return (color) => {
     return createCustomTheme(theme, color)
   }
 }
 
 export function setColorWithCustomTemplate(theme, color, isDefault = true) {
+  // console.log('setColorWithCustomTemplate', theme, color)
+  if (typeof theme?.custom === `function`) {
+    // console.log('color', color)
+    return theme.custom.call(JSON.parse(JSON.stringify(theme)), { color })
+  }
   return createCustomTheme(theme, color, isDefault)
 }
 
@@ -40,6 +57,9 @@ export function setColorWithCustomTemplate(theme, color, isDefault = true) {
 export function setFontSizeWithTemplate(template) {
   return function (fontSize, isDefault = true) {
     const customTheme = JSON.parse(JSON.stringify(template))
+    if (typeof template?.custom === `function`) {
+      return template.custom.call(customTheme, { fontSize })
+    }
     if (isDefault) {
       customTheme.block.h1[`font-size`] = `${fontSize * 1.2}px`
       customTheme.block.h2[`font-size`] = `${fontSize * 1.2}px`
@@ -58,6 +78,10 @@ export function setFontSizeWithTemplate(template) {
 }
 
 export function setTheme(theme, fontSize, color, isDefault) {
+  // console.log('setTheme.theme', theme, custom)
+  if (typeof theme?.custom === `function`) {
+    return theme.custom.call(JSON.parse(JSON.stringify(theme)), { fontSize, color })
+  }
   return setColorWithCustomTemplate(setFontSizeWithTemplate(theme)(fontSize, isDefault), color, isDefault)
 }
 

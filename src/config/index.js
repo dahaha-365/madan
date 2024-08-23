@@ -1,5 +1,6 @@
 import defaultStyle from './themes/default.js'
 import graceStyle from './themes/grace.js'
+import modernStyle from './themes/modern.js'
 import colorSets from './colors.js'
 
 export const prefix = `MD`
@@ -226,6 +227,8 @@ export const defaultTheme = defaultStyle
 
 export const graceTheme = graceStyle
 
+export const modernTheme = modernStyle
+
 export const themeOptions = [
   {
     label: `经典`,
@@ -237,9 +240,15 @@ export const themeOptions = [
     value: `grace`,
     desc: ``,
   },
+  {
+    label: `现代`,
+    value: `modern`,
+    desc: `自定义的主题`,
+  },
 ]
 
 export const themeMap = {
   default: defaultTheme,
   grace: graceTheme,
+  modern: modernTheme,
 }

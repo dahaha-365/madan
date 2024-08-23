@@ -270,6 +270,10 @@ export const useStore = defineStore(`store`, () => {
 
   const getTheme = (size, color) => {
     const t = setFontSizeWithTemplate(themeMap[theme.value])(size.replace(`px`, ``), theme.value === `default`)
+    // console.log('getTheme', t, color, theme.value, themeMap[theme.value])
+    if (typeof themeMap[theme.value]?.custom === `function`) {
+      return themeMap[theme.value].custom.call(t, { color })
+    }
     return setColorWithCustomTemplate(t, color, theme.value === `default`)
   }
 

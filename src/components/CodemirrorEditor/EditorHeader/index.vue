@@ -2,6 +2,7 @@
 import { nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
+import { EmojiButton } from '@joeattardi/emoji-button'
 import CodeMirror from 'codemirror'
 
 import PostInfo from './PostInfo.vue'
@@ -120,9 +121,9 @@ function copy() {
           /class="base"( style="display: inline")*/g,
           `class="base" style="display: inline"`,
         )
-      // 公众号不支持 position， 转换为等价的 translateY
+        // 公众号不支持 position， 转换为等价的 translateY
         .replace(/top:(.*?)em/g, `transform: translateY($1em)`)
-      // 适配主题中的颜色变量
+        // 适配主题中的颜色变量
         .replaceAll(`var(--el-text-color-regular)`, `#3f3f3f`)
       clipboardDiv.focus()
       window.getSelection().removeAllRanges()
@@ -152,6 +153,14 @@ function copy() {
       emit(`endCopy`)
     })
   }, 350)
+}
+
+const picker = new EmojiButton({
+  position: `bottom-start`,
+})
+
+function toggleEmoji(event) {
+  picker.togglePicker(event.target)
 }
 </script>
 
@@ -185,6 +194,20 @@ function copy() {
       </DropdownMenu>
       <EditDropdown />
       <StyleDropdown />
+      <DropdownMenu trigger="click" @click.stop="toggleEmoji">
+        <DropdownMenuTrigger>
+          😀Emoji键盘
+          <el-icon class="ml-2">
+            <ElIconArrowDown />
+          </el-icon>
+        </DropdownMenuTrigger>
+      </DropdownMenu>
+      <el-button class="emojiTrigger" link @click.stop="toggleEmoji">
+        😀Emoji键盘
+        <el-icon class="ml-2">
+          <ElIconArrowDown />
+        </el-icon>
+      </el-button>
       <HelpDropdown />
     </el-space>
     <el-button plain type="primary" @click="copy">
