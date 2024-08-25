@@ -209,7 +209,7 @@ watch(isDark, (newValue) => {
       </DropdownMenu>
       <EditDropdown />
       <StyleDropdown />
-      <el-button :class.attr="emojiTrigger" size="large" link @click="toggleEmoji">
+      <el-button class="emojiTrigger" size="large" link @click="toggleEmoji">
         😀Emoji键盘
         <el-icon class="ml-2">
           <ElIconArrowDown />

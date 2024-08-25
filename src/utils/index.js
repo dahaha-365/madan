@@ -17,15 +17,15 @@ function createCustomTheme(theme, color, isDefault = true) {
     return theme.custom.call(JSON.parse(JSON.stringify(customTheme)), { color })
   }
   // console.log('createCustomTheme.customTheme', customTheme)
-  // customTheme.block.h1[`border-bottom`] = `2px solid ${color}`
-  // customTheme.block.h2.background = color
-  // customTheme.block.h3[`border-left`] = `3px solid ${color}`
-  // customTheme.block.h4.color = color
+  customTheme.block.h1[`border-bottom`] = `2px solid ${color}`
+  customTheme.block.h2.background = color
+  customTheme.block.h3[`border-left`] = `3px solid ${color}`
+  customTheme.block.h4.color = color
   customTheme.inline.strong.color = color
 
   if (!isDefault) {
-    // customTheme.block.h3[`border-bottom`] = `1px dashed ${color}`
-    // customTheme.block.blockquote[`border-left`] = `4px solid ${color}`
+    customTheme.block.h3[`border-bottom`] = `1px dashed ${color}`
+    customTheme.block.blockquote[`border-left`] = `4px solid ${color}`
   }
 
   return customTheme
@@ -78,7 +78,7 @@ export function setFontSizeWithTemplate(template) {
 }
 
 export function setTheme(theme, fontSize, color, isDefault) {
-  // console.log('setTheme.theme', theme, custom)
+  // console.log('setTheme.theme', theme, fontSize, color, isDefault)
   if (typeof theme?.custom === `function`) {
     return theme.custom.call(JSON.parse(JSON.stringify(theme)), { fontSize, color })
   }

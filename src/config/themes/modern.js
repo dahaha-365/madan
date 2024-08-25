@@ -1,3 +1,32 @@
+import { svg2png } from 'svg-png-converter'
+import color from 'color'
+import { useStore } from '@/stores'
+
+const h1BorderImageSrc = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/svg" t="1724511602865" class="icon" version="1.1" p-id="1413">
+ <g id="Layer_1">
+  <title>Layer 1</title>
+  <g id="svg_3">
+   <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_1" y2="8.5" x2="17" y1="8.5" x1="0" stroke="#000" fill="none"/>
+   <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_2" y2="17" x2="8.5" y1="0" x1="8.5" stroke="#000" fill="none"/>
+  </g>
+  <g id="svg_6">
+   <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_4" y2="25.5" x2="34" y1="25.5" x1="17" stroke="#000" fill="none"/>
+   <line stroke-linecap="undefined" stroke-linejoin="undefined" id="svg_5" y2="34" x2="25.5" y1="17" x1="25.5" stroke="#000" fill="none"/>
+  </g>
+ </g>
+
+</svg>`
+
+const h1BorderImage = await svg2png({
+  input: h1BorderImageSrc.trim(),
+  encoding: `dataURL`,
+  format: `png`,
+  width: 34,
+  height: 34,
+  multiplier: 1,
+  quality: 1,
+})
+
 const baseColor = `#3f3f3f`
 
 export default {
@@ -8,31 +37,34 @@ export default {
   block: {
     // 一级标题样式
     h1: {
-      'font-size': `1.2em`,
       'text-align': `center`,
       'font-weight': `bold`,
       'display': `table`,
       'margin': `2em auto 1em`,
       'padding': `0 1em`,
       'color': `var(--el-text-color-regular)`,
+      'border-image-slice': `17 17 17 17`,
+      'border-image-width': `17px 17px 17px 17px`,
+      'border-image-outset': `0px 0px 0px 0px`,
+      'border-image-repeat': `stretch stretch`,
+      'border-image-source': `url(${h1BorderImage})`,
+      'border-style': `solid`,
     },
 
     // 二级标题样式
     h2: {
-      'font-size': `1.2em`,
       'text-align': `center`,
       'font-weight': `bold`,
       'display': `table`,
       'margin': `4em auto 2em`,
       'padding': `0 0.2em`,
-      'background': `rgba(0, 152, 116, 0.9)`,
-      'color': `#fff`,
+      'color': `var(--el-text-color-regular)`,
+      'border-radius': `5px`,
     },
 
     // 三级标题样式
     h3: {
       'font-weight': `bold`,
-      'font-size': `1.1em`,
       'margin': `2em 8px 0.75em 0`,
       'line-height': `1.2`,
       'padding-left': `8px`,
@@ -43,14 +75,18 @@ export default {
     // 四级标题样式
     h4: {
       'font-weight': `bold`,
-      'font-size': `1em`,
       'margin': `2em 8px 0.5em`,
-      'color': `rgba(66, 185, 131, 0.9)`,
+      'color': `var(--el-text-color-regular)`,
     },
 
-    h5: {},
+    h5: {
+      'font-weight': `bold`,
+      'color': `var(--el-text-color-regular)`,
+    },
 
-    h6: {},
+    h6: {
+      color: `var(--el-text-color-regular)`,
+    },
 
     // 段落样式
     p: {
@@ -194,17 +230,37 @@ export default {
     },
   },
   custom(options) {
-    console.log(this)
-    console.log(options)
-    if (options?.fontSize) {
-      this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
-      this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
-      this.block.h3 = { ...this.block.h3, ...{ 'font-size': `${options.fontSize * 1.5}px` } }
-      this.block.h4 = { ...this.block.h4, ...{ 'font-size': `${options.fontSize * 1.4}px` } }
-      this.block.h5 = { ...this.block.h5, ...{ 'font-size': `${options.fontSize * 1.3}px` } }
-      this.block.h6 = { ...this.block.h6, ...{ 'font-size': `${options.fontSize * 1.2}px` } }
-    }
-    console.log(`output`, this)
+    const stander = color(options?.color).rgb()
+    const lighten1 = color(options?.color).lighten(1).rgb()
+    const h1BorderImage = svg2png({
+      input: h1BorderImageSrc.trim().replaceAll(`#000`, `${stander.hex()}`),
+      encoding: `dataURL`,
+      format: `png`,
+      width: 34,
+      height: 34,
+      multiplier: 1,
+      quality: 1,
+    })
+    Promise.all([h1BorderImage]).then(([h1BorderImage]) => {
+      const store = useStore()
+      const {
+        editorRefresh,
+      } = store
+
+      if (options?.fontSize) {
+        this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
+        this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
+        this.block.h3 = { ...this.block.h3, ...{ 'font-size': `${options.fontSize * 1.5}px` } }
+        this.block.h4 = { ...this.block.h4, ...{ 'font-size': `${options.fontSize * 1.4}px` } }
+        this.block.h5 = { ...this.block.h5, ...{ 'font-size': `${options.fontSize * 1.3}px` } }
+        this.block.h6 = { ...this.block.h6, ...{ 'font-size': `${options.fontSize * 1.2}px` } }
+      }
+      if (options?.color) {
+        this.block.h1 = { ...this.block.h1, ...{ 'border-image-source': `url(${h1BorderImage})` } }
+        this.block.h2 = { ...this.block.h2, ...{ background: `linear-gradient(45deg, ${stander}, ${lighten1})` } }
+      }
+      editorRefresh()
+    })
     return this
   },
 }
