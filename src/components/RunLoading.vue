@@ -17,7 +17,7 @@ onMounted(() => {
       class="loading"
     >
       <el-text size="large" tag="strong">
-        致力于让 Markdown 编辑更简单
+        Madan 编辑器
       </el-text>
     </div>
   </transition>

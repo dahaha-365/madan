@@ -9,7 +9,7 @@ jobs:
   build:
     name: Create Release
     runs-on: ubuntu-latest
-    if: github.repository == 'doocs/md'
+    if: github.repository == 'dahaha-365/madan'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,9 +22,9 @@ jobs:
           tag_name: ${{ github.ref }}
           release_name: ${{ github.ref }}
           body: |
-            # 微信 Markdown 编辑器 ${{ github.ref }} 发布🎈
+            # 微信 Madan 编辑器 ${{ github.ref }} 发布🎈
 
-            [![github](https://badgen.net/badge/>>/GitHub/cyan)](https://github.com/doocs/md/releases) [![gitee](https://badgen.net/badge/>>/Gitee/cyan)](https://gitee.com/doocs/md/releases)
+            [![github](https://badgen.net/badge/>>/GitHub/cyan)](https://github.com/dahaha-365/madan/releases)
 
             > Markdown 文档自动即时渲染为微信图文，让你不再为微信文章排版而发愁！
 

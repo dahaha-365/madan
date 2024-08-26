@@ -4,7 +4,6 @@ import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
 import data from 'emoji-mart-vue-fast/data/all.json'
 import { EmojiIndex, Picker } from 'emoji-mart-vue-fast/src'
-import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill'
 import CodeMirror from 'codemirror'
 
 import PostInfo from './PostInfo.vue'
@@ -157,8 +156,6 @@ function copy() {
     })
   }, 350)
 }
-
-polyfillCountryFlagEmojis(`Twemoji Mozilla`)
 
 const emojiIndex = new EmojiIndex(data)
 
