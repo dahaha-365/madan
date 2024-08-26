@@ -13,8 +13,7 @@
     "preview": "npm run build && vite preview",
     "release:cli": "node ./bin/release.js",
     "lint": "eslint . --fix",
-    "type-check": "vue-tsc --build --force",
-    "postinstall": "simple-git-hooks"
+    "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
