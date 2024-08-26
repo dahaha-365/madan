@@ -60,6 +60,30 @@ export const useStore = defineStore(`store`, () => {
   // 编辑区域内容
   const editorContent = useStorage(`__editor_content`, formatDoc(DEFAULT_CONTENT))
 
+  const initEditorContent = () => {
+    ElMessageBox.confirm(
+      `此操作将会把文档内容还原成初始文档，是否继续操作？`,
+      `提示`,
+      {
+        confirmButtonText: `确定`,
+        cancelButtonText: `取消`,
+        type: `warning`,
+        center: true,
+      },
+    )
+      .then(() => {
+        editorContent.value = DEFAULT_CONTENT
+        editor.value.setValue(DEFAULT_CONTENT)
+        ElMessage({
+          type: `success`,
+          message: `文档重置成功~`,
+        })
+      })
+      .catch(() => {
+        editor.value.focus()
+      })
+  }
+
   // 格式化文档
   const formatContent = () => {
     const doc = formatDoc(editor.value.getValue())
@@ -444,6 +468,7 @@ export const useStore = defineStore(`store`, () => {
 
     resetStyleConfirm,
     editorContent,
+    initEditorContent,
 
     cssContentConfig,
     addCssContentTab,

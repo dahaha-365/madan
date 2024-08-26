@@ -21,6 +21,7 @@ const {
 const {
   toggleDark,
   toggleEditOnLeft,
+  initEditorContent,
   exportEditorContent2HTML,
   exportEditorContent2MD,
   importMarkdownContent,
@@ -67,6 +68,12 @@ const {
           <ElIconCheck />
         </el-icon>
         左侧编辑
+      </DropdownMenuItem>
+      <DropdownMenuItem @click="initEditorContent()">
+        <el-icon class="mr-2 h-4 w-4">
+          <ElIconRefresh />
+        </el-icon>
+        初始化内容
       </DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
