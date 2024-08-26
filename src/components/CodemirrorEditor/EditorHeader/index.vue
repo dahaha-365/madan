@@ -1,8 +1,10 @@
 <script setup>
-import { nextTick, watch } from 'vue'
+import { nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
-import { EmojiButton } from '@joeattardi/emoji-button'
+import data from 'emoji-mart-vue-fast/data/all.json'
+import 'emoji-mart-vue-fast/css/emoji-mart.css'
+import { EmojiIndex, Picker } from 'emoji-mart-vue-fast/src'
 import CodeMirror from 'codemirror'
 
 import PostInfo from './PostInfo.vue'
@@ -156,7 +158,16 @@ function copy() {
   }, 350)
 }
 
-const picker = new EmojiButton({
+// polyfillCountryFlagEmojis(`Twemoji Mozilla`)
+
+const emojiIndex = new EmojiIndex(data)
+
+const emojiButtonRef = ref()
+
+const emojiPopoverRef = ref()
+
+/*
+const Picker = new EmojiButton({
   theme: isDark.value ? `dark` : `light`,
 })
 
@@ -177,6 +188,7 @@ watch(isDark, (newValue) => {
     picker.setTheme(`light`)
   }
 })
+ */
 </script>
 
 <template>
@@ -209,7 +221,7 @@ watch(isDark, (newValue) => {
       </DropdownMenu>
       <EditDropdown />
       <StyleDropdown />
-      <el-button :class.attr="'emojiTrigger'.concat('')" size="large" link @click="toggleEmoji">
+      <el-button ref="emojiButtonRef" :class.attr="'emojiTrigger'.concat('')" size="large" link>
         😀Emoji键盘
         <el-icon class="ml-2">
           <ElIconArrowDown />
@@ -222,6 +234,15 @@ watch(isDark, (newValue) => {
     </el-button>
 
     <PostInfo />
+    <el-popover
+      ref="emojiPopoverRef"
+      :virtual-ref="emojiButtonRef"
+      :width="368"
+      trigger="click"
+      virtual-triggering
+    >
+      <Picker :data="emojiIndex" set="apple" />
+    </el-popover>
   </div>
 </template>
 

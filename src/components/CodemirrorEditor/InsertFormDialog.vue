@@ -35,6 +35,8 @@ function insertTable() {
     title="插入表格"
     class="insert__dialog"
     :model-value="store.isShowInsertFormDialog"
+    draggable
+    overflow
     @close="toggleShowInsertFormDialog(false)"
   >
     <el-row class="tb-options" type="flex" align="middle" :gutter="10">

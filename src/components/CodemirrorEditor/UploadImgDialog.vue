@@ -278,7 +278,7 @@ function uploadImage(params) {
 </script>
 
 <template>
-  <el-dialog title="本地上传" class="upload__dialog" :model-value="store.isShowUploadImgDialog" @close="store.toggleShowUploadImgDialog(false)">
+  <el-dialog title="本地上传" class="upload__dialog" :model-value="store.isShowUploadImgDialog" draggable overflow @close="store.toggleShowUploadImgDialog(false)">
     <el-tabs v-model="activeName">
       <el-tab-pane class="upload-panel" label="选择上传" name="upload">
         <el-select v-model="imgHost" placeholder="请选择" size="small" @change="changeImgHost">
