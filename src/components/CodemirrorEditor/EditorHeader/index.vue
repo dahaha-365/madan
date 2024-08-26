@@ -3,8 +3,8 @@ import { nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
 import data from 'emoji-mart-vue-fast/data/all.json'
-import 'emoji-mart-vue-fast/css/emoji-mart.css'
 import { EmojiIndex, Picker } from 'emoji-mart-vue-fast/src'
+import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill'
 import CodeMirror from 'codemirror'
 
 import PostInfo from './PostInfo.vue'
@@ -158,37 +158,36 @@ function copy() {
   }, 350)
 }
 
-// polyfillCountryFlagEmojis(`Twemoji Mozilla`)
+polyfillCountryFlagEmojis(`Twemoji Mozilla`)
 
 const emojiIndex = new EmojiIndex(data)
+
+const emojiI18n = {
+  search: '搜索...',
+  categories: {
+    search: '搜索结果',
+    recent: '经常使用',
+    smileys: '心情',
+    people: '人物',
+    nature: '动物 & 大自然',
+    foods: '食物 & 饮料',
+    activity: '活动',
+    places: '旅行 & 地标',
+    objects: '物体',
+    symbols: '符号',
+    flags: '国旗',
+    custom: '自定义',
+  }
+}
+
+const emojiSelected = (emoji) => {
+  // console.log(emoji)
+  emit(`addEmoji`, emoji.native)
+}
 
 const emojiButtonRef = ref()
 
 const emojiPopoverRef = ref()
-
-/*
-const Picker = new EmojiButton({
-  theme: isDark.value ? `dark` : `light`,
-})
-
-picker.on(`emoji`, (selection) => {
-  // alert(`"emoji" event fired, emoji is ${selection.emoji} with name ${selection.name}`);
-  emit(`addEmoji`, selection.emoji)
-})
-
-function toggleEmoji(event) {
-  picker.togglePicker(event.target)
-}
-
-watch(isDark, (newValue) => {
-  if (newValue) {
-    picker.setTheme(`dark`)
-  }
-  else {
-    picker.setTheme(`light`)
-  }
-})
- */
 </script>
 
 <template>
@@ -237,11 +236,11 @@ watch(isDark, (newValue) => {
     <el-popover
       ref="emojiPopoverRef"
       :virtual-ref="emojiButtonRef"
-      :width="368"
+      :width="404"
       trigger="click"
       virtual-triggering
     >
-      <Picker :data="emojiIndex" set="apple" />
+      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" :perLine="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
     </el-popover>
   </div>
 </template>

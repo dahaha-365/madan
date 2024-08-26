@@ -1,3 +1,4 @@
+@import "emoji-mart-vue-fast/css/emoji-mart.css";
 @nightBgColor: #333333;
 @nightPreviewColor: #1e1e1e;
 @nightHeaderColor: #3c3c3c;
@@ -12,6 +13,72 @@
 @nightLineColor: #2E2848;
 
 .dark {
+  .emoji-mart {
+    color: @nightFontColor;
+    background: @nightCodeMirrorColor;
+    border-color: @nightBgColor;
+  }
+
+  .emoji-mart-bar {
+    border-color: @nightBgColor;
+  }
+
+  .emoji-mart-anchors {
+    color: @nightFontColor;
+  }
+
+  .emoji-mart-anchor:hover,
+  .emoji-mart-anchor-selected {
+    color: @nightWhiteColor;
+  }
+
+  .emoji-mart-anchor-bar {
+    background-color: @nightWhiteColor;
+  }
+
+  .emoji-mart-search input {
+    border-color: @nightFontColor;
+  }
+
+  .emoji-mart .vue-recycle-scroller {
+    background-color: #90a959;
+  }
+
+  .emoji-mart-category .emoji-mart-emoji:hover:before,
+  .emoji-mart-emoji-selected:before {
+    background-color: @nightFontColor;
+  }
+
+  .emoji-mart-category-label h3 {
+    background-color: @nightCodeMirrorColor;
+  }
+
+  .emoji-mart-no-results {
+    color: @nightFontColor;
+  }
+
+  .emoji-mart-preview-shortname {
+    color: @nightFontColor;
+  }
+
+  .emoji-mart-preview-emoticon {
+    color: @nightFontColor;
+  }
+
+  .emoji-mart-preview-name,
+  .emoji-mart-title-label {
+    color: @nightWhiteColor;
+  }
+
+  .emoji-mart-skin-swatches {
+    border-color: @nightWhiteColor;
+    background-color: @nightFontColor;
+  }
+
+  .emoji-mart-skin-swatch-selected:after {
+    background-color: @nightBgColor;
+  }
+
   .container {
     background-color: @nightBgColor;
 

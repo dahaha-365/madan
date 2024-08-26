@@ -30,6 +30,7 @@ export default {
       'text-align': `center`,
       'font-weight': `bold`,
       'display': `table`,
+      'color': `#fff`,
       'margin': `4em auto 2em`,
       'padding': `0.3em 1em`,
       'background': `\${baseBorderColor}`,
