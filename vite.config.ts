@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
       vue(),
       UnoCSS(),
       nodePolyfills({
-        include: [`path`, `util`, `timers`, `stream`, `fs`],
+        include: [`path`, `util`, `timers`, `stream`, `fs`, `os`],
         overrides: {
           // Since `fs` is not supported in browsers, we can use the `memfs` package to polyfill it.
           // fs: 'memfs',
