@@ -13,5 +13,6 @@ export default antfu({
     'no-unused-vars': `off`,
     'no-console': `off`,
     'no-debugger': `off`,
+    'vue/prefer-separate-static-class': `off`,
   },
 })

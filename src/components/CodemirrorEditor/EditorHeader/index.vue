@@ -163,24 +163,24 @@ polyfillCountryFlagEmojis(`Twemoji Mozilla`)
 const emojiIndex = new EmojiIndex(data)
 
 const emojiI18n = {
-  search: '搜索...',
+  search: `搜索...`,
   categories: {
-    search: '搜索结果',
-    recent: '经常使用',
-    smileys: '心情',
-    people: '人物',
-    nature: '动物 & 大自然',
-    foods: '食物 & 饮料',
-    activity: '活动',
-    places: '旅行 & 地标',
-    objects: '物体',
-    symbols: '符号',
-    flags: '国旗',
-    custom: '自定义',
-  }
+    search: `搜索结果`,
+    recent: `经常使用`,
+    smileys: `心情`,
+    people: `人物`,
+    nature: `动物 & 大自然`,
+    foods: `食物 & 饮料`,
+    activity: `活动`,
+    places: `旅行 & 地标`,
+    objects: `物体`,
+    symbols: `符号`,
+    flags: `国旗`,
+    custom: `自定义`,
+  },
 }
 
-const emojiSelected = (emoji) => {
+function emojiSelected(emoji) {
   // console.log(emoji)
   emit(`addEmoji`, emoji.native)
 }
@@ -220,7 +220,7 @@ const emojiPopoverRef = ref()
       </DropdownMenu>
       <EditDropdown />
       <StyleDropdown />
-      <el-button ref="emojiButtonRef" :class.attr="'emojiTrigger'.concat('')" size="large" link>
+      <el-button ref="emojiButtonRef" :class.attr="`emojiTrigger`" size="large" link>
         😀Emoji键盘
         <el-icon class="ml-2">
           <ElIconArrowDown />
@@ -240,7 +240,7 @@ const emojiPopoverRef = ref()
       trigger="click"
       virtual-triggering
     >
-      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" :perLine="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
+      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" per-line="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
     </el-popover>
   </div>
 </template>

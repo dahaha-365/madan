@@ -50,8 +50,6 @@ const quoteImage = await svg2png({
   quality: 1,
 })
 
-const baseColor = `#3f3f3f`
-
 export default {
   BASE: {
     'text-align': `left`,
@@ -127,8 +125,8 @@ export default {
     },
 
     h6: {
-      'margin': `.3em auto`,
-      'color': `var(--el-text-color-regular)`,
+      margin: `.3em auto`,
+      color: `var(--el-text-color-regular)`,
     },
 
     // 段落样式
@@ -289,9 +287,9 @@ export default {
   custom(options) {
     const stander = color(options?.color).rgb()
     const lighten1 = color(options?.color).lighten(1).rgb()
-    const alpha5 = color(options?.color).alpha(.5).rgb()
-    const alpha2 = color(options?.color).alpha(.2).rgb()
-    const alpha1 = color(options?.color).alpha(.1).rgb()
+    const alpha5 = color(options?.color).alpha(0.5).rgb()
+    const alpha2 = color(options?.color).alpha(0.2).rgb()
+    const alpha1 = color(options?.color).alpha(0.1).rgb()
     const h1BorderImage = svg2png({
       input: h1BorderImageSrc.trim().replaceAll(`#000`, `${stander.hex()}`),
       encoding: `dataURL`,
@@ -329,17 +327,17 @@ export default {
         this.block.h2 = { ...this.block.h2, ...{ 'border-image-source': `url(${h1BorderImage})` } }
         this.block.h3 = { ...this.block.h3, ...{ 'border-image-source': `url(${h1BorderImage})` } }
         this.block.h4 = { ...this.block.h4, ...{ 'border-image-source': `url(${h1BorderImage})` } }
-        this.block.h5 = { ...this.block.h5, ...{ 'color': `${stander}` } }
-        this.block.h6 = { ...this.block.h6, ...{ 'color': `${stander}` } }
+        this.block.h5 = { ...this.block.h5, ...{ color: `${stander}` } }
+        this.block.h6 = { ...this.block.h6, ...{ color: `${stander}` } }
         this.block.hr = { ...this.block.hr, ...{ 'border-color': `${alpha5}` } }
         this.block.blockquote = { ...this.block.blockquote, ...{ 'background': `${alpha1}`, 'border-image-source': `url(${quoteImage})` } }
-        this.block.code_pre = { ...this.block.code_pre, ...{ 'background': `${alpha1}` } }
-        this.block.code = { ...this.block.code, ...{ 'background': `${alpha1}` } }
+        this.block.code_pre = { ...this.block.code_pre, ...{ background: `${alpha1}` } }
+        this.block.code = { ...this.block.code, ...{ background: `${alpha1}` } }
 
-        this.inline.strong = { ...this.inline.strong, ...{ 'color': `${stander}` } }
-        this.inline.thead = { ...this.inline.thead, ...{ 'background': `${alpha1}` } }
+        this.inline.strong = { ...this.inline.strong, ...{ color: `${stander}` } }
+        this.inline.thead = { ...this.inline.thead, ...{ background: `${alpha1}` } }
         this.inline.td = { ...this.inline.td, ...{ 'border-color': `${lighten1}` } }
-        this.inline.codespan = { ...this.inline.codespan, ...{ 'background': `${alpha2}` } }
+        this.inline.codespan = { ...this.inline.codespan, ...{ background: `${alpha2}` } }
       }
       editorRefresh()
     })
