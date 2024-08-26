@@ -72,9 +72,6 @@
     "vite-plugin-node-polyfills": "^0.22.0",
     "vue-tsc": "^2.0.29"
   },
-  "simple-git-hooks": {
-    "pre-commit": "npx lint-staged"
-  },
   "lint-staged": {
     "*": "npm run lint"
   }
