@@ -40,11 +40,11 @@ export default {
       'text-align': `center`,
       'font-weight': `bold`,
       'display': `table`,
-      'margin': `2em auto 1em`,
-      'padding': `0 1em`,
+      'margin': `2em auto`,
+      'padding': `.3em 1em`,
       'color': `var(--el-text-color-regular)`,
-      'border-image-slice': `17 17 17 17`,
-      'border-image-width': `17px 17px 17px 17px`,
+      'border-image-slice': `9 9 9 9`,
+      'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
       'border-image-source': `url(${h1BorderImage})`,
@@ -56,36 +56,56 @@ export default {
       'text-align': `center`,
       'font-weight': `bold`,
       'display': `table`,
-      'margin': `4em auto 2em`,
-      'padding': `0 0.2em`,
+      'margin': `1em auto`,
+      'padding': `.3em 1em`,
       'color': `var(--el-text-color-regular)`,
-      'border-radius': `5px`,
+      'border-image-slice': `17 17 17 17`,
+      'border-image-width': `17px 17px 17px 17px`,
+      'border-image-outset': `0px 0px 0px 0px`,
+      'border-image-repeat': `stretch stretch`,
+      'border-image-source': `url(${h1BorderImage})`,
+      'border-style': `solid`,
     },
 
     // 三级标题样式
     h3: {
       'font-weight': `bold`,
-      'margin': `2em 8px 0.75em 0`,
-      'line-height': `1.2`,
-      'padding-left': `8px`,
-      'border-left': `3px solid rgba(0, 152, 116, 0.9)`,
+      'display': `table`,
+      'margin': `.7em auto`,
+      'padding': `.2em 1em`,
       'color': `var(--el-text-color-regular)`,
+      'border-image-slice': `7 8 7 8`,
+      'border-image-width': `7px 8px 7px 8px`,
+      'border-image-outset': `0px 0px 0px 0px`,
+      'border-image-repeat': `stretch stretch`,
+      'border-image-source': `url(${h1BorderImage})`,
+      'border-style': `solid`,
     },
 
     // 四级标题样式
     h4: {
       'font-weight': `bold`,
-      'margin': `2em 8px 0.5em`,
+      'display': `table`,
+      'margin': `.5em auto`,
+      'padding': `.1em 1em`,
       'color': `var(--el-text-color-regular)`,
+      'border-image-slice': `8 7 8 7`,
+      'border-image-width': `7px 4px 7px 4px`,
+      'border-image-outset': `0px 0px 0px 0px`,
+      'border-image-repeat': `stretch stretch`,
+      'border-image-source': `url(${h1BorderImage})`,
+      'border-style': `solid`,
     },
 
     h5: {
       'font-weight': `bold`,
+      'margin': `.4em auto`,
       'color': `var(--el-text-color-regular)`,
     },
 
     h6: {
-      color: `var(--el-text-color-regular)`,
+      'margin': `.3em auto`,
+      'color': `var(--el-text-color-regular)`,
     },
 
     // 段落样式
@@ -102,7 +122,8 @@ export default {
       'border-left': `none`,
       'padding': `1em`,
       'border-radius': `8px`,
-      'color': `rgba(0,0,0,0.5)`,
+      // 'color': `#a0a0a0`,
+      // 'mix-blend-mode': `difference`,
       'background': `#f7f7f7`,
       'margin': `2em 8px`,
     },
@@ -160,7 +181,7 @@ export default {
     hr: {
       'border-style': `solid`,
       'border-width': `1px 0 0`,
-      'border-color': `rgba(0,0,0,0.1)`,
+      'margin': `1.2em auto`,
       '-webkit-transform-origin': `0 0`,
       '-webkit-transform': `scale(1, 0.5)`,
       'transform-origin': `0 0`,
@@ -232,6 +253,8 @@ export default {
   custom(options) {
     const stander = color(options?.color).rgb()
     const lighten1 = color(options?.color).lighten(1).rgb()
+    const alpha5 = color(options?.color).alpha(.5).rgb()
+    const alpha1 = color(options?.color).alpha(.1).rgb()
     const h1BorderImage = svg2png({
       input: h1BorderImageSrc.trim().replaceAll(`#000`, `${stander.hex()}`),
       encoding: `dataURL`,
@@ -257,7 +280,14 @@ export default {
       }
       if (options?.color) {
         this.block.h1 = { ...this.block.h1, ...{ 'border-image-source': `url(${h1BorderImage})` } }
-        this.block.h2 = { ...this.block.h2, ...{ background: `linear-gradient(45deg, ${stander}, ${lighten1})` } }
+        this.block.h2 = { ...this.block.h2, ...{ 'border-image-source': `url(${h1BorderImage})` } }
+        this.block.h3 = { ...this.block.h3, ...{ 'border-image-source': `url(${h1BorderImage})` } }
+        this.block.h4 = { ...this.block.h4, ...{ 'border-image-source': `url(${h1BorderImage})` } }
+        this.block.h5 = { ...this.block.h5, ...{ 'color': `${stander}` } }
+        this.block.h6 = { ...this.block.h6, ...{ 'color': `${stander}` } }
+        this.block.hr = { ...this.block.hr, ...{ 'border-color': `${alpha5}` } }
+        this.block.blockquote = { ...this.block.blockquote, ...{ 'background': `${alpha1}` } }
+        // this.block.h2 = { ...this.block.h2, ...{ background: `linear-gradient(45deg, ${stander}, ${lighten1})` } }
       }
       editorRefresh()
     })
