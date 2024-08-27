@@ -237,7 +237,7 @@ const emojiPopoverRef = ref()
       trigger="click"
       virtual-triggering
     >
-      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" per-line="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
+      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" :per-line="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
     </el-popover>
   </div>
 </template>

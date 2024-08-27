@@ -1,7 +1,6 @@
 <script setup>
 import { nextTick, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-
 import StyleOptionMenu from './StyleOptionMenu.vue'
 
 import {

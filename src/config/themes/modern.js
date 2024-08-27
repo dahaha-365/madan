@@ -1,8 +1,6 @@
-import { svg2png } from 'svg-png-converter'
 import color from 'color'
-import { useStore } from '@/stores'
 
-const h1BorderImageSrc = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/svg" t="1724511602865" class="icon" version="1.1" p-id="1413">
+let h1BorderImage = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/svg" t="1724511602865" class="icon" version="1.1" p-id="1413">
  <g id="Layer_1">
   <title>Layer 1</title>
   <g id="svg_3">
@@ -17,7 +15,7 @@ const h1BorderImageSrc = `<svg width="34" height="34" xmlns="http://www.w3.org/2
 
 </svg>`
 
-const quoteImageSrc = `<svg width="47.99999999999999" height="47.99999999999999" xmlns="http://www.w3.org/2000/svg" version="1.1">
+let quoteImage = `<svg width="47.99999999999999" height="47.99999999999999" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
  <g>
   <title>Layer 1</title>
@@ -29,26 +27,6 @@ const quoteImageSrc = `<svg width="47.99999999999999" height="47.99999999999999"
   </g>
  </g>
 </svg>`
-
-const h1BorderImage = await svg2png({
-  input: h1BorderImageSrc.trim(),
-  encoding: `dataURL`,
-  format: `png`,
-  width: 34,
-  height: 34,
-  multiplier: 1,
-  quality: 1,
-})
-
-const quoteImage = await svg2png({
-  input: quoteImageSrc.trim(),
-  encoding: `dataURL`,
-  format: `png`,
-  width: 48,
-  height: 48,
-  multiplier: 1,
-  quality: 1,
-})
 
 export default {
   BASE: {
@@ -68,7 +46,7 @@ export default {
       'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(${h1BorderImage})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
       'border-style': `solid`,
     },
 
@@ -84,7 +62,7 @@ export default {
       'border-image-width': `17px 17px 17px 17px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(${h1BorderImage})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
       'border-style': `solid`,
     },
 
@@ -99,7 +77,7 @@ export default {
       'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(${h1BorderImage})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
       'border-style': `solid`,
     },
 
@@ -114,7 +92,7 @@ export default {
       'border-image-width': `7px 7px 7px 7px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(${h1BorderImage})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
       'border-style': `solid`,
     },
 
@@ -152,7 +130,7 @@ export default {
       'border-image-width': `24px 24px 24px 24px`,
       'border-image-outset': `12px 12px 12px 12px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(${quoteImage})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(quoteImage)})`,
     },
 
     blockquote_p: {
@@ -290,57 +268,45 @@ export default {
     const alpha5 = color(options?.color).alpha(0.5).rgb()
     const alpha2 = color(options?.color).alpha(0.2).rgb()
     const alpha1 = color(options?.color).alpha(0.1).rgb()
-    const h1BorderImage = svg2png({
-      input: h1BorderImageSrc.trim().replaceAll(`#000`, `${stander.hex()}`),
-      encoding: `dataURL`,
-      format: `png`,
-      width: 34,
-      height: 34,
-      multiplier: 1,
-      quality: 1,
-    })
-    const quoteImage = svg2png({
-      input: quoteImageSrc.trim().replaceAll(`#000`, `${alpha1.hex()}`),
-      encoding: `dataURL`,
-      format: `png`,
-      width: 48,
-      height: 48,
-      multiplier: 1,
-      quality: 1,
-    })
+    h1BorderImage = h1BorderImage.trim().replaceAll(`#000`, `${stander.hex()}`)
+    quoteImage = quoteImage.trim().replaceAll(`#000`, `${alpha1.hex()}`)
+    /*
     Promise.all([h1BorderImage, quoteImage]).then(([h1BorderImage, quoteImage]) => {
       const store = useStore()
       const {
         editorRefresh,
       } = store
+      */
 
-      if (options?.fontSize) {
-        this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
-        this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
-        this.block.h3 = { ...this.block.h3, ...{ 'font-size': `${options.fontSize * 1.5}px` } }
-        this.block.h4 = { ...this.block.h4, ...{ 'font-size': `${options.fontSize * 1.4}px` } }
-        this.block.h5 = { ...this.block.h5, ...{ 'font-size': `${options.fontSize * 1.3}px` } }
-        this.block.h6 = { ...this.block.h6, ...{ 'font-size': `${options.fontSize * 1.2}px` } }
-      }
-      if (options?.color) {
-        this.block.h1 = { ...this.block.h1, ...{ 'border-image-source': `url(${h1BorderImage})` } }
-        this.block.h2 = { ...this.block.h2, ...{ 'border-image-source': `url(${h1BorderImage})` } }
-        this.block.h3 = { ...this.block.h3, ...{ 'border-image-source': `url(${h1BorderImage})` } }
-        this.block.h4 = { ...this.block.h4, ...{ 'border-image-source': `url(${h1BorderImage})` } }
-        this.block.h5 = { ...this.block.h5, ...{ color: `${stander}` } }
-        this.block.h6 = { ...this.block.h6, ...{ color: `${stander}` } }
-        this.block.hr = { ...this.block.hr, ...{ 'border-color': `${alpha5}` } }
-        this.block.blockquote = { ...this.block.blockquote, ...{ 'background': `${alpha1}`, 'border-image-source': `url(${quoteImage})` } }
-        this.block.code_pre = { ...this.block.code_pre, ...{ background: `${alpha1}` } }
-        this.block.code = { ...this.block.code, ...{ background: `${alpha1}` } }
+    if (options?.fontSize) {
+      this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
+      this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
+      this.block.h3 = { ...this.block.h3, ...{ 'font-size': `${options.fontSize * 1.5}px` } }
+      this.block.h4 = { ...this.block.h4, ...{ 'font-size': `${options.fontSize * 1.4}px` } }
+      this.block.h5 = { ...this.block.h5, ...{ 'font-size': `${options.fontSize * 1.3}px` } }
+      this.block.h6 = { ...this.block.h6, ...{ 'font-size': `${options.fontSize * 1.2}px` } }
+    }
+    if (options?.color) {
+      this.block.h1 = { ...this.block.h1, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
+      this.block.h2 = { ...this.block.h2, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
+      this.block.h3 = { ...this.block.h3, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
+      this.block.h4 = { ...this.block.h4, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
+      this.block.h5 = { ...this.block.h5, ...{ color: `${stander}` } }
+      this.block.h6 = { ...this.block.h6, ...{ color: `${stander}` } }
+      this.block.hr = { ...this.block.hr, ...{ 'border-color': `${alpha5}` } }
+      this.block.blockquote = { ...this.block.blockquote, ...{ 'background': `${alpha1}`, 'border-image-source': `url(data:image/svg+xml;base64,${btoa(quoteImage)})` } }
+      this.block.code_pre = { ...this.block.code_pre, ...{ background: `${alpha1}` } }
+      this.block.code = { ...this.block.code, ...{ background: `${alpha1}` } }
 
-        this.inline.strong = { ...this.inline.strong, ...{ color: `${stander}` } }
-        this.inline.thead = { ...this.inline.thead, ...{ background: `${alpha1}` } }
-        this.inline.td = { ...this.inline.td, ...{ 'border-color': `${lighten1}` } }
-        this.inline.codespan = { ...this.inline.codespan, ...{ background: `${alpha2}` } }
-      }
+      this.inline.strong = { ...this.inline.strong, ...{ color: `${stander}` } }
+      this.inline.thead = { ...this.inline.thead, ...{ background: `${alpha1}` } }
+      this.inline.td = { ...this.inline.td, ...{ 'border-color': `${lighten1}` } }
+      this.inline.codespan = { ...this.inline.codespan, ...{ background: `${alpha2}` } }
+    }
+    /*
       editorRefresh()
     })
+       */
     return this
   },
 }
