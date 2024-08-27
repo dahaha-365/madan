@@ -268,8 +268,8 @@ export default {
     const alpha5 = color(options?.color).alpha(0.5).rgb()
     const alpha2 = color(options?.color).alpha(0.2).rgb()
     const alpha1 = color(options?.color).alpha(0.1).rgb()
-    h1BorderImage = h1BorderImage.trim().replaceAll(`#000`, `${stander.hex()}`)
-    quoteImage = quoteImage.trim().replaceAll(`#000`, `${alpha1.hex()}`)
+    h1BorderImage = h1BorderImage.trim().replaceAll(`#000`, `${stander}`)
+    quoteImage = quoteImage.trim().replaceAll(`#000`, `${alpha2}`)
     /*
     Promise.all([h1BorderImage, quoteImage]).then(([h1BorderImage, quoteImage]) => {
       const store = useStore()

@@ -10,9 +10,6 @@ import WxRenderer from '@/utils/wx-renderer'
 import DEFAULT_CONTENT from '@/assets/example/markdown.md?raw'
 import DEFAULT_CSS_CONTENT from '@/assets/example/theme-css.txt?raw'
 import { addPrefix, css2json, customCssWithTemplate, downloadMD, exportHTML, formatCss, formatDoc, setColorWithCustomTemplate, setFontSizeWithTemplate, setTheme } from '@/utils'
-import { scanThemes } from '@/utils/themes'
-
-scanThemes()
 
 const defaultKeyMap = CodeMirror.keyMap.default
 const modPrefix
@@ -114,10 +111,14 @@ export const useStore = defineStore(`store`, () => {
   // 更新编辑器
   const editorRefresh = () => {
     codeThemeChange()
-
-    const renderer = wxRenderer.getRenderer(isCiteStatus.value)
+    const renderer = wxRenderer
+    renderer.reset()
+    renderer.setOptions({ status: isCiteStatus.value, legend: legend.value })
     marked.setOptions({ renderer })
+    console.log(editor.value.getValue(0))
+    console.log(marked.parse(`  - list1`))
     let outputTemp = marked.parse(editor.value.getValue(0))
+    // console.log('outputTemp', outputTemp)
 
     // 去除第一行的 margin-top
     outputTemp = outputTemp.replace(/(style=".*?)"/, `$1;margin-top: 0"`)

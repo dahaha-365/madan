@@ -1,236 +1,294 @@
-import { Renderer, marked } from 'marked'
+import {
+  Renderer,
+  marked,
+} from 'marked'
 import hljs from 'highlight.js'
 import markedKatex from 'marked-katex-extension'
 
-marked.use(markedKatex({
-  throwOnError: false,
-  output: `html`,
-  nonStandard: true,
-}))
+marked.use(
+  markedKatex({
+    throwOnError: false,
+    output: `html`,
+    nonStandard: true,
+  }),
+)
 
-class WxRenderer {
+class WxRenderer extends Renderer {
   constructor(opts) {
+    super()
     this.opts = opts
-    let footnotes = []
-    let footnoteIndex = 0
-    let styleMapping = new Map()
+    this.footnotes = []
+    this.footnoteIndex = 0
+    this.styleMapping = this.buildTheme(opts.theme)
+  }
 
-    const merge = (base, extend) => Object.assign({}, base, extend)
+  reset = () => {
+    this.footnotes = []
+    this.footnoteIndex = 0
+  }
 
-    this.buildTheme = (themeTpl) => {
-      const mapping = {}
-      const base = merge(themeTpl.BASE, {
-        'font-family': this.opts.fonts,
-        'font-size': this.opts.size,
-      })
-      for (const ele in themeTpl.inline) {
-        if (Object.prototype.hasOwnProperty.call(themeTpl.inline, ele)) {
-          const style = themeTpl.inline[ele]
-          mapping[ele] = merge(themeTpl.BASE, style)
-        }
-      }
+  merge = (base, extend) => ({
+    ...base,
+    ...extend,
+  })
 
-      const base_block = merge(base, {})
-      for (const ele in themeTpl.block) {
-        if (Object.prototype.hasOwnProperty.call(themeTpl.block, ele)) {
-          const style = themeTpl.block[ele]
-          mapping[ele] = merge(base_block, style)
-        }
-      }
-      return mapping
+  buildTheme = (themeTpl) => {
+    const base = this.merge(themeTpl.BASE, {
+      'font-family': this.opts.fonts,
+      'font-size': this.opts.size,
+    })
+
+    const mapping = {
+      ...Object.fromEntries(
+        Object.entries(themeTpl.inline).map(([ele, style]) => [
+          ele,
+          this.merge(base, style),
+        ]),
+      ),
+      ...Object.fromEntries(
+        Object.entries(themeTpl.block).map(([ele, style]) => [
+          ele,
+          this.merge(base, style),
+        ]),
+      ),
     }
 
-    const getStyles = (tokenName, addition) => {
-      const arr = []
-      const dict = styleMapping[tokenName]
-      if (!dict)
-        return ``
-      for (const key in dict) {
-        arr.push(`${key}:${dict[key]}`)
-      }
-      return `style="${arr.join(`;`) + (addition || ``)}"`
+    return mapping
+  }
+
+  getStyles = (tokenName, addition = ``) => {
+    const dict = this.styleMapping[tokenName]
+    if (!dict) {
+      return ``
+    }
+    const styles = Object.entries(dict)
+      .map(([key, value]) => `${key}:${value}`)
+      .join(`;`)
+    return `style="${styles}${addition}"`
+  }
+
+  styledContent = (styleLabel, content, label = styleLabel) => {
+    return `<${label} ${this.getStyles(styleLabel)}>${content}</${label}>`
+  }
+
+  addFootnote = (title, link) => {
+    this.footnotes.push([++this.footnoteIndex, title, link])
+    return this.footnoteIndex
+  }
+
+  buildFootnotes = () => {
+    if (!this.footnotes.length) {
+      return ``
     }
 
-    const addFootnote = (title, link) => {
-      footnotes.push([++footnoteIndex, title, link])
-      return footnoteIndex
+    const footnoteArray = this.footnotes
+      .map(([index, title, link]) =>
+        link === title
+          ? `<code style="font-size: 90%; opacity: 0.6;">[${index}]</code>: <i style="word-break: break-all">${title}</i><br/>`
+          : `<code style="font-size: 90%; opacity: 0.6;">[${index}]</code> ${title}: <i style="word-break: break-all">${link}</i><br/>`,
+      )
+      .join(`\n`)
+
+    return this.styledContent(`h4`, `引用链接`) + this.styledContent(`footnotes`, footnoteArray, `p`)
+  }
+
+  buildAddition = () => `
+    <style>
+      .preview-wrapper pre::before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #ccc;
+        text-align: center;
+        font-size: 0.8em;
+        padding: 5px 10px 0;
+        line-height: 15px;
+        height: 15px;
+        font-weight: 600;
+      }
+    </style>
+  `
+
+  setOptions = (newOpts) => {
+    this.opts = this.merge(this.opts, newOpts)
+    this.styleMapping = this.buildTheme(this.opts.theme)
+  }
+
+  heading({
+    tokens,
+            depth,
+  }) {
+    const text = this.parser.parseInline(tokens)
+    const tag = `h${depth}`
+    return this.styledContent(tag, text)
+  }
+
+  paragraph({
+    tokens,
+  }) {
+    const text = this.parser.parseInline(tokens)
+    const isFigureImage = text.includes(`<figure`) && text.includes(`<img`)
+    const isEmpty = text.trim() === ``
+    if (isFigureImage || isEmpty) {
+      return text
     }
+    return this.styledContent(`p`, text)
+  }
 
-    this.buildFootnotes = () => {
-      const footnoteArray = footnotes.map((x) => {
-        if (x[1] === x[2]) {
-          return `<code style="font-size: 90%; opacity: 0.6;">[${x[0]}]</code>: <i>${x[1]}</i><br/>`
-        }
-        return `<code style="font-size: 90%; opacity: 0.6;">[${x[0]}]</code> ${x[1]}: <i>${x[2]}</i><br/>`
-      })
-      if (!footnoteArray.length) {
-        return ``
-      }
-      return `<h4 ${getStyles(`h4`)}>引用链接</h4><p ${getStyles(
-        `footnotes`,
-      )}>${footnoteArray.join(`\n`)}</p>`
+  blockquote({
+    tokens,
+  }) {
+    let text = this.parser.parse(tokens)
+    text = text.replace(/<p.*?>/g, `<p ${this.getStyles(`blockquote_p`)}>`)
+    return this.styledContent(`blockquote`, text)
+  }
+
+  code({
+    text,
+         lang,
+  }) {
+    if (lang.startsWith(`mermaid`)) {
+      setTimeout(() => {
+        window.mermaid?.run()
+      }, 0)
+      return `<center><pre class="mermaid">${text}</pre></center>`
     }
+    const langText = lang.split(` `)[0]
+    const language = hljs.getLanguage(langText) ? langText : `plaintext`
+    let highlighted = hljs.highlight(text, {
+      language,
+    }).value
+    highlighted = highlighted
+      .replace(/\r\n/g, `<br/>`)
+      .replace(/\n/g, `<br/>`)
+      .replace(/(>[^<]+)|(^[^<]+)/g, str => str.replace(/\s/g, `&nbsp;`))
 
-    this.buildAddition = () => {
-      return `
-            <style>
-            .preview-wrapper pre::before {
-                position: absolute;
-                top: 0;
-                right: 0;
-                color: #ccc;
-                text-align: center;
-                font-size: 0.8em;
-                padding: 5px 10px 0;
-                line-height: 15px;
-                height: 15px;
-                font-weight: 600;
-            }
-            </style>
-        `
+    return `<pre class="hljs code__pre" ${this.getStyles(
+      `code_pre`,
+    )}><code class="language-${lang}" ${this.getStyles(
+      `code`,
+    )}>${highlighted}</code></pre>`
+  }
+
+  codespan({
+    text,
+  }) {
+    return this.styledContent(`codespan`, text, `code`)
+  }
+
+  listitem(tokens, prefix) {
+    return `<li ${this.getStyles(`listitem`)}>${prefix}${this.parser.parseInline(tokens)}</li>`
+  }
+
+  /*
+   * 多层列表有bug
+   */
+  list({
+    ordered,
+         items,
+  }) {
+    const listItems = []
+    for (let i = 0; i < items.length; i++) {
+      const {
+        tokens,
+      } = items[i]
+      console.log(`items`, i, items)
+      console.log(`tokens`, tokens)
+      if (tokens.length === 1) {
+        const prefix = ordered ? `${i + 1}. ` : `• `
+        listItems.push(this.listitem(tokens, prefix))
+      }
+      else {
+        const prefix = ordered ? `${i + 1}. ` : `• `
+        listItems.push(this.list(tokens[1], prefix))
+        // listItems.push(this.listitem(tokens[0], prefix))
+      }
     }
+    const label = ordered ? `ol` : `ul`
+    // console.log('listItems', listItems)
+    return this.styledContent(label, listItems.join(``))
+  }
 
-    this.setOptions = (newOpts) => {
-      this.opts = merge(this.opts, newOpts)
+  image({
+    href,
+          title,
+          text,
+  }) {
+    const createSubText = s =>
+      s ? `<figcaption ${this.getStyles(`figcaption`)}>${s}</figcaption>` : ``
+    const transform = {
+      'alt': () => text,
+      'title': () => title,
+      'alt-title': () => text || title,
+      'title-alt': () => title || text,
+    }[this.opts.legend] || (() => ``)
+
+    const subText = createSubText(transform())
+    const figureStyles = this.getStyles(`figure`)
+    const imgStyles = this.getStyles(`image`)
+    return `<figure ${figureStyles}><img ${imgStyles} src="${href}" title="${title}" alt="${text}"/>${subText}</figure>`
+  }
+
+  link({
+    href,
+         title,
+         text,
+  }) {
+    if (href.startsWith(`https://mp.weixin.qq.com`)) {
+      return `<a href="${href}" title="${title || text}" ${this.getStyles(
+        `wx_link`,
+      )}>${text}</a>`
     }
-
-    this.hasFootnotes = () => footnotes.length !== 0
-
-    this.getRenderer = (status) => {
-      footnotes = []
-      footnoteIndex = 0
-
-      styleMapping = this.buildTheme(this.opts.theme)
-      const renderer = new Renderer()
-
-      renderer.heading = (text, level) => {
-        switch (level) {
-          case 1:
-            return `<h1 ${getStyles(`h1`)}>${text}</h1>`
-          case 2:
-            return `<h2 ${getStyles(`h2`)}>${text}</h2>`
-          case 3:
-            return `<h3 ${getStyles(`h3`)}>${text}</h3>`
-          case 4:
-            return `<h4 ${getStyles(`h4`)}>${text}</h4>`
-          case 5:
-            return `<h5 ${getStyles(`h5`)}>${text}</h5>`
-          case 6:
-            return `<h6 ${getStyles(`h6`)}>${text}</h6>`
-          default:
-            return `<h4 ${getStyles(`h4`)}>${text}</h4>`
-        }
-      }
-      renderer.paragraph = (text) => {
-        if (text.includes(`<figure`) && text.includes(`<img`)) {
-          return text
-        }
-        return text.replace(/ /g, ``) === ``
-          ? ``
-          : `<p ${getStyles(`p`)}>${text}</p>`
-      }
-
-      renderer.blockquote = (text) => {
-        text = text.replace(/<p.*?>/g, `<p ${getStyles(`blockquote_p`)}>`)
-        return `<blockquote ${getStyles(`blockquote`)}>${text}</blockquote>`
-      }
-      renderer.code = (text, lang = ``) => {
-        if (lang.startsWith(`mermaid`)) {
-          setTimeout(() => {
-            window.mermaid?.run()
-          }, 0)
-          return `<center><pre class="mermaid">${text}</pre></center>`
-        }
-        lang = lang.split(` `)[0]
-        lang = hljs.getLanguage(lang) ? lang : `plaintext`
-        text = hljs.highlight(text, { language: lang }).value
-        text = text
-          .replace(/\r\n/g, `<br/>`)
-          .replace(/\n/g, `<br/>`)
-          .replace(/(>[^<]+)|(^[^<]+)/g, (str) => {
-            return str.replace(/\s/g, `&nbsp;`)
-          })
-
-        return `<pre class="hljs code__pre" ${getStyles(
-          `code_pre`,
-        )}><code class="language-${lang}" ${getStyles(
-          `code`,
-        )}>${text}</code></pre>`
-      }
-      renderer.codespan = (text, _) =>
-        `<code ${getStyles(`codespan`)}>${text}</code>`
-      renderer.listitem = text =>
-        `<li ${getStyles(`listitem`)}><span><%s/></span>${text}</li>`
-
-      renderer.list = (text, ordered, _) => {
-        text = text.replace(/<\/*p .*?>/g, ``).replace(/<\/*p>/g, ``)
-        const segments = text.split(`<%s/>`)
-        if (!ordered) {
-          text = segments.join(`• `)
-          return `<ul ${getStyles(`ul`)}>${text}</ul>`
-        }
-        text = segments[0]
-        for (let i = 1; i < segments.length; i++) {
-          text = `${text + i}. ${segments[i]}`
-        }
-        return `<ol ${getStyles(`ol`)}>${text}</ol>`
-      }
-      renderer.image = (href, title, text) => {
-        const createSubText = (s) => {
-          if (!s) {
-            return ``
-          }
-
-          return `<figcaption ${getStyles(`figcaption`)}>${s}</figcaption>`
-        }
-        const transform = (title, alt) => {
-          const legend = localStorage.getItem(`legend`)
-          switch (legend) {
-            case `alt`:
-              return alt
-            case `title`:
-              return title
-            case `alt-title`:
-              return alt || title
-            case `title-alt`:
-              return title || alt
-            default:
-              return ``
-          }
-        }
-        const subText = createSubText(transform(title, text))
-        const figureStyles = getStyles(`figure`)
-        const imgStyles = getStyles(`image`)
-        return `<figure ${figureStyles}><img ${imgStyles} src="${href}" title="${title}" alt="${text}"/>${subText}</figure>`
-      }
-      renderer.link = (href, title, text) => {
-        if (href.startsWith(`https://mp.weixin.qq.com`)) {
-          return `<a href="${href}" title="${title || text}" ${getStyles(
-            `wx_link`,
-          )}>${text}</a>`
-        }
-        if (href === text) {
-          return text
-        }
-        if (status) {
-          const ref = addFootnote(title || text, href)
-          return `<span ${getStyles(`link`)}>${text}<sup>[${ref}]</sup></span>`
-        }
-        return `<span ${getStyles(`link`)}>${text}</span>`
-      }
-      renderer.strong = text =>
-        `<strong ${getStyles(`strong`)}>${text}</strong>`
-      renderer.em = text =>
-        `<span style="font-style: italic;">${text}</span>`
-      renderer.table = (header, body) =>
-        `<section style="padding:0 8px;"><table class="preview-table"><thead ${getStyles(
-          `thead`,
-        )}>${header}</thead><tbody>${body}</tbody></table></section>`
-      renderer.tablecell = (text, _) =>
-        `<td ${getStyles(`td`)}>${text}</td>`
-      renderer.hr = () => `<hr ${getStyles(`hr`)}>`
-      return renderer
+    if (href === text) {
+      return text
     }
+    if (this.opts.status) {
+      const ref = this.addFootnote(title || text, href)
+      return `<span ${this.getStyles(
+        `link`,
+      )}>${text}<sup>[${ref}]</sup></span>`
+    }
+    return this.styledContent(`link`, text, `span`)
+  }
+
+  strong({
+    text,
+  }) {
+    return this.styledContent(`strong`, text)
+  }
+
+  em({
+    text,
+  }) {
+    return `<span style="font-style: italic;">${text}</span>`
+  }
+
+  table({
+    header,
+          rows,
+  }) {
+    const headerRow = header.map(cell => this.styledContent(`td`, cell.text)).join(``)
+    const body = rows.map((row) => {
+      const rowContent = row.map(cell => this.styledContent(`td`, cell.text)).join(``)
+      return this.styledContent(`tr`, rowContent)
+    }).join(``)
+    return `
+    <section style="padding:0 8px;">
+      <table class="preview-table">
+        <thead ${this.getStyles(`thead`)}>${headerRow}</thead>
+        <tbody>${body}</tbody>
+      </table>
+    </section>`
+  }
+
+  tablecell({
+    text,
+  }) {
+    return this.styledContent(`td`, text)
+  }
+
+  hr(_) {
+    return this.styledContent(`hr`, ``)
   }
 }
 
