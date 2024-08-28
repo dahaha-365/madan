@@ -183,29 +183,21 @@ class WxRenderer extends Renderer {
   /*
    * 多层列表有bug
    */
-  list({
-    ordered,
-         items,
-  }) {
+  list({ ordered, items }) {
     const listItems = []
     for (let i = 0; i < items.length; i++) {
-      const {
-        tokens,
-      } = items[i]
-      console.log(`items`, i, items)
-      console.log(`tokens`, tokens)
-      if (tokens.length === 1) {
-        const prefix = ordered ? `${i + 1}. ` : `• `
-        listItems.push(this.listitem(tokens, prefix))
-      }
-      else {
-        const prefix = ordered ? `${i + 1}. ` : `• `
-        listItems.push(this.list(tokens[1], prefix))
-        // listItems.push(this.listitem(tokens[0], prefix))
+      const { tokens } = items[i]
+      const prefix = ordered ? `${i + 1}. ` : `• `
+      for (const token of tokens) {
+        if (token.type === `list`) {
+          listItems.push(this.list(token))
+        }
+        else {
+          listItems.push(this.listitem([token], prefix))
+        }
       }
     }
     const label = ordered ? `ol` : `ul`
-    // console.log('listItems', listItems)
     return this.styledContent(label, listItems.join(``))
   }
 

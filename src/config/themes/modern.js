@@ -1,6 +1,6 @@
 import color from 'color'
 
-let h1BorderImage = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/svg" t="1724511602865" class="icon" version="1.1" p-id="1413">
+const h1BorderImageSrc = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/svg" t="1724511602865" class="icon" version="1.1" p-id="1413">
  <g id="Layer_1">
   <title>Layer 1</title>
   <g id="svg_3">
@@ -15,7 +15,7 @@ let h1BorderImage = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/s
 
 </svg>`
 
-let quoteImage = `<svg width="47.99999999999999" height="47.99999999999999" xmlns="http://www.w3.org/2000/svg" version="1.1">
+const quoteImageSrc = `<svg width="47.99999999999999" height="47.99999999999999" xmlns="http://www.w3.org/2000/svg" version="1.1">
 
  <g>
   <title>Layer 1</title>
@@ -46,7 +46,7 @@ export default {
       'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImageSrc)})`,
       'border-style': `solid`,
     },
 
@@ -62,7 +62,7 @@ export default {
       'border-image-width': `17px 17px 17px 17px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImageSrc)})`,
       'border-style': `solid`,
     },
 
@@ -77,7 +77,7 @@ export default {
       'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImageSrc)})`,
       'border-style': `solid`,
     },
 
@@ -92,7 +92,7 @@ export default {
       'border-image-width': `7px 7px 7px 7px`,
       'border-image-outset': `0px 0px 0px 0px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImageSrc)})`,
       'border-style': `solid`,
     },
 
@@ -130,7 +130,7 @@ export default {
       'border-image-width': `24px 24px 24px 24px`,
       'border-image-outset': `12px 12px 12px 12px`,
       'border-image-repeat': `stretch stretch`,
-      'border-image-source': `url(data:image/svg+xml;base64,${btoa(quoteImage)})`,
+      'border-image-source': `url(data:image/svg+xml;base64,${btoa(quoteImageSrc)})`,
     },
 
     blockquote_p: {
@@ -263,21 +263,6 @@ export default {
     },
   },
   custom(options) {
-    const stander = color(options?.color).rgb()
-    const lighten1 = color(options?.color).lighten(1).rgb()
-    const alpha5 = color(options?.color).alpha(0.5).rgb()
-    const alpha2 = color(options?.color).alpha(0.2).rgb()
-    const alpha1 = color(options?.color).alpha(0.1).rgb()
-    h1BorderImage = h1BorderImage.trim().replaceAll(`#000`, `${stander}`)
-    quoteImage = quoteImage.trim().replaceAll(`#000`, `${alpha2}`)
-    /*
-    Promise.all([h1BorderImage, quoteImage]).then(([h1BorderImage, quoteImage]) => {
-      const store = useStore()
-      const {
-        editorRefresh,
-      } = store
-      */
-
     if (options?.fontSize) {
       this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
       this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
@@ -287,6 +272,15 @@ export default {
       this.block.h6 = { ...this.block.h6, ...{ 'font-size': `${options.fontSize * 1.2}px` } }
     }
     if (options?.color) {
+      const stander = color(options?.color).rgb()
+      const lighten1 = color(options?.color).lighten(1).rgb()
+      const alpha5 = color(options?.color).alpha(0.5).rgb()
+      const alpha2 = color(options?.color).alpha(0.2).rgb()
+      const alpha1 = color(options?.color).alpha(0.1).rgb()
+
+      const h1BorderImage = h1BorderImageSrc.trim().replaceAll(`#000`, `${stander}`)
+      const quoteImage = quoteImageSrc.trim().replaceAll(`#000`, `${alpha2}`)
+
       this.block.h1 = { ...this.block.h1, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
       this.block.h2 = { ...this.block.h2, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
       this.block.h3 = { ...this.block.h3, ...{ 'border-image-source': `url(data:image/svg+xml;base64,${btoa(h1BorderImage)})` } }
@@ -303,10 +297,7 @@ export default {
       this.inline.td = { ...this.inline.td, ...{ 'border-color': `${lighten1}` } }
       this.inline.codespan = { ...this.inline.codespan, ...{ background: `${alpha2}` } }
     }
-    /*
-      editorRefresh()
-    })
-       */
+
     return this
   },
 }

@@ -78,7 +78,7 @@ export function setFontSizeWithTemplate(template) {
 }
 
 export function setTheme(theme, fontSize, color, isDefault) {
-  // console.log('setTheme.theme', theme, fontSize, color, isDefault)
+  console.log(`setTheme.theme`, theme, fontSize, color, isDefault)
   if (typeof theme?.custom === `function`) {
     return theme.custom.call(JSON.parse(JSON.stringify(theme)), { fontSize, color })
   }

@@ -115,8 +115,8 @@ export const useStore = defineStore(`store`, () => {
     renderer.reset()
     renderer.setOptions({ status: isCiteStatus.value, legend: legend.value })
     marked.setOptions({ renderer })
-    console.log(editor.value.getValue(0))
-    console.log(marked.parse(`  - list1`))
+    // console.log(editor.value.getValue(0))
+    // console.log(marked.parse(`  - list1`))
     let outputTemp = marked.parse(editor.value.getValue(0))
     // console.log('outputTemp', outputTemp)
 
