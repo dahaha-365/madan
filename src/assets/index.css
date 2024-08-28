@@ -1,9 +1,11 @@
+@import "twemoji-colr-font/twemoji.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    font-family: "Twemoji", 'PingFang SC', BlinkMacSystemFont, Roboto, 'Helvetica Neue', sans-serif;
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 

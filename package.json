@@ -46,6 +46,7 @@
     "svg-png-converter": "^0.0.9",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
+    "twemoji-colr-font": "^15.0.3",
     "uuid": "^10.0.0",
     "vue": "^3.4.38"
   },
