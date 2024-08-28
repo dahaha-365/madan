@@ -5,15 +5,11 @@ import CodeMirror from 'codemirror'
 import { useDark, useStorage, useToggle } from '@vueuse/core'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
-import { codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, themeMap, themeOptions } from '@/config'
+import { altKey, codeBlockThemeOptions, colorOptions, fontFamilyOptions, fontSizeOptions, legendOptions, shiftKey, themeMap, themeOptions } from '@/config'
 import WxRenderer from '@/utils/wx-renderer'
 import DEFAULT_CONTENT from '@/assets/example/markdown.md?raw'
 import DEFAULT_CSS_CONTENT from '@/assets/example/theme-css.txt?raw'
 import { addPrefix, css2json, customCssWithTemplate, downloadMD, exportHTML, formatCss, formatDoc, setColorWithCustomTemplate, setFontSizeWithTemplate, setTheme } from '@/utils'
-
-const defaultKeyMap = CodeMirror.keyMap.default
-const modPrefix
-  = defaultKeyMap === CodeMirror.keyMap.macDefault ? `Cmd` : `Ctrl`
 
 export const useStore = defineStore(`store`, () => {
   // 是否开启深色模式
@@ -180,6 +176,12 @@ export const useStore = defineStore(`store`, () => {
       },
     ],
   })
+
+  onMounted(() => {
+    // 清空过往历史记录
+    cssContent.value = ``
+  })
+
   const getCurrentTab = () => cssContentConfig.value.tabs.find((tab) => {
     return tab.name === cssContentConfig.value.active
   })
@@ -236,7 +238,7 @@ export const useStore = defineStore(`store`, () => {
         matchBrackets: true,
         autofocus: true,
         extraKeys: {
-          [`${modPrefix}-F`]: function autoFormat(editor) {
+          [`${shiftKey}-${altKey}-F`]: function autoFormat(editor) {
             const doc = formatCss(editor.getValue())
             getCurrentTab().content = doc
             editor.setValue(doc)

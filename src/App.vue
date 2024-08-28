@@ -17,6 +17,11 @@ body,
   padding: 0;
 }
 
+// 抵消下拉菜单开启时带来的样式
+body {
+  pointer-events: initial !important;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -77,10 +82,5 @@ body,
 // 修复颜色选择器下拉箭头位置
 .el-icon.el-color-picker__icon.is-icon-arrow-down {
   position: absolute;
-}
-
-// 参见：https://github.com/element-plus/element-plus/issues/11662
-.el-dropdown-link:focus-visible {
-  outline: unset;
 }
 </style>

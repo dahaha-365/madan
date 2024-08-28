@@ -11,6 +11,8 @@ import {
 
 import { useStore } from '@/stores'
 
+const props = defineProps([`isOpen`, `clickTrigger`, `openDropdown`, `updateOpen`])
+
 const store = useStore()
 
 const {
@@ -29,14 +31,19 @@ const {
 </script>
 
 <template>
-  <DropdownMenu>
-    <DropdownMenuTrigger>
+  <DropdownMenu :open="props.isOpen" @update:open="props.updateOpen">
+    <DropdownMenuTrigger
+      class="flex items-center p-2 px-4 hover:bg-gray-2 dark:hover:bg-stone-9"
+      :class="{
+        'bg-gray-2': props.isOpen,
+        'dark:bg-stone-9': props.isOpen,
+      }"
+      @click="props.clickTrigger()"
+      @mouseenter="props.openDropdown(0)"
+    >
       文件
-      <el-icon class="ml-2">
-        <ElIconArrowDown />
-      </el-icon>
     </DropdownMenuTrigger>
-    <DropdownMenuContent>
+    <DropdownMenuContent align="start">
       <DropdownMenuItem @click="importMarkdownContent()">
         <el-icon class="mr-2 h-4 w-4">
           <ElIconUpload />
@@ -69,6 +76,7 @@ const {
         </el-icon>
         左侧编辑
       </DropdownMenuItem>
+      <DropdownMenuSeparator />
       <DropdownMenuItem @click="initEditorContent()">
         <el-icon class="mr-2 h-4 w-4">
           <ElIconRefresh />

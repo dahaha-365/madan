@@ -1,12 +1,10 @@
 <script setup>
-import { nextTick, ref } from 'vue'
+import { nextTick, reactive, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElNotification } from 'element-plus'
-import data from 'emoji-mart-vue-fast/data/all.json'
-import { EmojiIndex, Picker } from 'emoji-mart-vue-fast/src'
-import CodeMirror from 'codemirror'
 
 import PostInfo from './PostInfo.vue'
+import EmojiDropdown from './EmojiDropdown.vue'
 import FileDropdown from './FileDropdown.vue'
 import HelpDropdown from './HelpDropdown.vue'
 import StyleDropdown from './StyleDropdown.vue'
@@ -21,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+import { altSign, ctrlKey, ctrlSign, shiftSign } from '@/config'
 import { mergeCss, solveWeChatImage } from '@/utils'
 import { useStore } from '@/stores'
 
@@ -31,39 +30,36 @@ const emit = defineEmits([
   `startCopy`,
   `endCopy`,
 ])
-const defaultKeyMap = CodeMirror.keyMap.default
-const modPrefix
-  = defaultKeyMap === CodeMirror.keyMap.macDefault ? `Cmd` : `Ctrl`
 
 const formatItems = [
   {
     label: `加粗`,
-    kbd: `${modPrefix} + B`,
-    emitArgs: [`addFormat`, `${modPrefix}-B`],
+    kbd: [ctrlSign, `B`],
+    emitArgs: [`addFormat`, `${ctrlKey}-B`],
   },
   {
     label: `斜体`,
-    kbd: `${modPrefix} + I`,
-    emitArgs: [`addFormat`, `${modPrefix}-I`],
+    kbd: [ctrlSign, `I`],
+    emitArgs: [`addFormat`, `${ctrlKey}-I`],
   },
   {
     label: `删除线`,
-    kbd: `${modPrefix} + D`,
-    emitArgs: [`addFormat`, `${modPrefix}-D`],
+    kbd: [ctrlSign, `D`],
+    emitArgs: [`addFormat`, `${ctrlKey}-D`],
   },
   {
     label: `超链接`,
-    kbd: `${modPrefix} + K`,
-    emitArgs: [`addFormat`, `${modPrefix}-K`],
+    kbd: [ctrlSign, `K`],
+    emitArgs: [`addFormat`, `${ctrlKey}-K`],
   },
   {
     label: `行内代码`,
-    kbd: `${modPrefix} + E`,
-    emitArgs: [`addFormat`, `${modPrefix}-E`],
+    kbd: [ctrlSign, `E`],
+    emitArgs: [`addFormat`, `${ctrlKey}-E`],
   },
   {
     label: `格式化`,
-    kbd: `${modPrefix} + F`,
+    kbd: [altSign, shiftSign, `F`],
     emitArgs: [`formatContent`],
   },
 ]
@@ -157,57 +153,55 @@ function copy() {
   }, 350)
 }
 
-const emojiIndex = new EmojiIndex(data)
-
-const emojiI18n = {
-  search: `搜索...`,
-  categories: {
-    search: `搜索结果`,
-    recent: `经常使用`,
-    smileys: `心情`,
-    people: `人物`,
-    nature: `动物 & 大自然`,
-    foods: `食物 & 饮料`,
-    activity: `活动`,
-    places: `旅行 & 地标`,
-    objects: `物体`,
-    symbols: `符号`,
-    flags: `国旗`,
-    custom: `自定义`,
-  },
+const isClickTrigger = ref(false)
+const isOpenList = reactive(Array.from({ length: 6 }).fill(false))
+function clickTrigger() {
+  isClickTrigger.value = !isClickTrigger.value
 }
 
-function emojiSelected(emoji) {
-  // console.log(emoji)
-  emit(`addEmoji`, emoji.native)
+function openDropdown(index) {
+  return () => {
+    isOpenList.fill(false)
+    isOpenList[index] = true
+  }
 }
 
-const emojiButtonRef = ref()
-
-const emojiPopoverRef = ref()
+function updateOpen(isOpen) {
+  if (!isOpen) {
+    isClickTrigger.value = false
+  }
+}
 </script>
 
 <template>
   <div class="header-container">
-    <el-space class="dropdowns flex-auto" size="large">
-      <FileDropdown />
-      <DropdownMenu>
-        <DropdownMenuTrigger>
+    <div class="dropdowns flex flex-auto">
+      <FileDropdown
+        :is-open="isClickTrigger && isOpenList[0]" :click-trigger="clickTrigger"
+        :open-dropdown="openDropdown(0)" :update-open="updateOpen"
+      />
+
+      <DropdownMenu :open="isClickTrigger && isOpenList[1]" @update:open="updateOpen">
+        <DropdownMenuTrigger
+          class="flex items-center p-2 px-4 hover:bg-gray-2 dark:hover:bg-stone-9" :class="{
+            'bg-gray-2': isClickTrigger && isOpenList[1],
+            'dark:bg-stone-9': isClickTrigger && isOpenList[1],
+          }" @click="clickTrigger()" @mouseenter="openDropdown(1)()"
+        >
           格式
-          <el-icon class="ml-2">
-            <ElIconArrowDown />
-          </el-icon>
         </DropdownMenuTrigger>
-        <DropdownMenuContent class="w-60">
-          <DropdownMenuItem v-for="{ label, kbd, emitArgs } in formatItems" :key="kbd" @click="$emit(...emitArgs)">
+        <DropdownMenuContent class="w-60" align="start">
+          <DropdownMenuItem v-for="{ label, kbd, emitArgs } in formatItems" :key="kbd" @click="$emit(...emitArgs);">
             <el-icon class="mr-2 h-4 w-4" />
             {{ label }}
             <DropdownMenuShortcut>
-              {{ kbd }}
+              <kbd v-for="item in kbd" :key="item" class="mx-1 bg-gray-2 dark:bg-stone-9">
+                {{ item }}
+              </kbd>
             </DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem @click="citeStatusChanged">
+          <DropdownMenuItem @click="citeStatusChanged()">
             <el-icon class="mr-2 h-4 w-4" :class="{ 'opacity-0': !isCiteStatus }">
               <ElIconCheck />
             </el-icon>
@@ -215,30 +209,28 @@ const emojiPopoverRef = ref()
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <EditDropdown />
-      <StyleDropdown />
-      <el-button ref="emojiButtonRef" :class.attr="`emojiTrigger`" size="large" link>
-        😀Emoji键盘
-        <el-icon class="ml-2">
-          <ElIconArrowDown />
-        </el-icon>
-      </el-button>
-      <HelpDropdown />
-    </el-space>
+      <EditDropdown
+        :is-open="isClickTrigger && isOpenList[2]" :click-trigger="clickTrigger"
+        :open-dropdown="openDropdown(2)" :update-open="updateOpen"
+      />
+      <StyleDropdown
+        :is-open="isClickTrigger && isOpenList[3]" :click-trigger="clickTrigger"
+        :open-dropdown="openDropdown(3)" :update-open="updateOpen"
+      />
+      <EmojiDropdown
+        :is-open="isClickTrigger && isOpenList[4]" :click-trigger="clickTrigger"
+        :open-dropdown="openDropdown(4)" :update-open="updateOpen"
+      />
+      <HelpDropdown
+        :is-open="isClickTrigger && isOpenList[5]" :click-trigger="clickTrigger"
+        :open-dropdown="openDropdown(5)" :update-open="updateOpen"
+      />
+    </div>
     <el-button plain type="primary" @click="copy">
       复制
     </el-button>
 
     <PostInfo />
-    <el-popover
-      ref="emojiPopoverRef"
-      :virtual-ref="emojiButtonRef"
-      :width="404"
-      trigger="click"
-      virtual-triggering
-    >
-      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" :per-line="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
-    </el-popover>
   </div>
 </template>
 
@@ -248,5 +240,18 @@ const emojiPopoverRef = ref()
   align-items: center;
   height: 100%;
   padding: 0 20px;
+}
+
+.dropdowns {
+  user-select: none;
+}
+
+kbd {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #a8a8a8;
+  padding: 1px 4px;
+  border-radius: 2px;
 }
 </style>
