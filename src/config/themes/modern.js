@@ -1,5 +1,7 @@
 import color from 'color'
 
+const baseColor = `#606060`
+
 const h1BorderImageSrc = `<svg width="34" height="34" xmlns="http://www.w3.org/2000/svg" t="1724511602865" class="icon" version="1.1" p-id="1413">
  <g id="Layer_1">
   <title>Layer 1</title>
@@ -41,7 +43,7 @@ export default {
       'display': `table`,
       'margin': `2em auto`,
       'padding': `.3em 1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'border-image-slice': `9 9 9 9`,
       'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
@@ -57,7 +59,7 @@ export default {
       'display': `table`,
       'margin': `1em auto`,
       'padding': `.3em 1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'border-image-slice': `17 17 17 17`,
       'border-image-width': `17px 17px 17px 17px`,
       'border-image-outset': `0px 0px 0px 0px`,
@@ -72,7 +74,7 @@ export default {
       'display': `table`,
       'margin': `.7em auto`,
       'padding': `.2em 1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'border-image-slice': `9 8 9 8`,
       'border-image-width': `9px 9px 9px 9px`,
       'border-image-outset': `0px 0px 0px 0px`,
@@ -87,7 +89,7 @@ export default {
       'display': `table`,
       'margin': `.5em auto`,
       'padding': `.1em 1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'border-image-slice': `8 8 8 8`,
       'border-image-width': `7px 7px 7px 7px`,
       'border-image-outset': `0px 0px 0px 0px`,
@@ -99,19 +101,19 @@ export default {
     h5: {
       'font-weight': `bold`,
       'margin': `.4em auto`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     h6: {
       margin: `.3em auto`,
-      color: `var(--el-text-color-regular)`,
+      color: `${baseColor}`,
     },
 
     // 段落样式
     p: {
       'margin': `1.5em 8px`,
       'letter-spacing': `0.1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'text-align': `justify`,
     },
 
@@ -123,7 +125,7 @@ export default {
       'border-radius': `8px`,
       // 'color': `#a0a0a0`,
       // 'mix-blend-mode': `darken`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'background': `#f7f7f7`,
       'margin': `2em 8px`,
       'border-image-slice': `24 24 24 24`,
@@ -136,7 +138,7 @@ export default {
     blockquote_p: {
       'letter-spacing': `0.1em`,
       // 'color': `rgb(80, 80, 80)`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'font-size': `1em`,
       'display': `block`,
     },
@@ -164,25 +166,25 @@ export default {
     ol: {
       'margin-left': `0`,
       'padding-left': `1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     ul: {
       'margin-left': `0`,
       'padding-left': `1em`,
       'list-style': `circle`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     footnotes: {
       'margin': `0.5em 8px`,
       'font-size': `80%`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     figure: {
       margin: `1.5em 8px`,
-      color: `var(--el-text-color-regular)`,
+      color: `${baseColor}`,
     },
     hr: {
       'border-style': `solid`,
@@ -199,12 +201,12 @@ export default {
       'text-indent': `-1em`,
       'display': `block`,
       'margin': `0.2em 8px`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     codespan: {
       'font-size': `90%`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
       'background': `#e0e0e0`,
       'padding': `3px 5px`,
       'border-radius': `4px`,
@@ -230,30 +232,31 @@ export default {
       'border-collapse': `collapse`,
       'text-align': `center`,
       'margin': `1em 8px`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
+      'border': `1px solid ${baseColor}`,
     },
 
     thead: {
       'background': `rgba(0, 0, 0, 0.05)`,
       'font-weight': `bold`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     th: {
-      border: `1px solid #aaaaaa`,
+      border: `1px solid ${baseColor}`,
       padding: `0.25em 0.5em`,
-      color: `var(--el-text-color-regular)`,
+      color: `${baseColor}`,
     },
 
     td: {
-      border: `1px solid #aaaaaa`,
+      border: `1px solid ${baseColor}`,
       padding: `0.25em 0.5em`,
-      color: `var(--el-text-color-regular)`,
+      color: `${baseColor}`,
     },
 
     footnote: {
       'font-size': `12px`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     figcaption: {
