@@ -1,6 +1,4 @@
 const baseColor = `#3f3f3f`
-// no-unused-vars
-const _baseBorderColor = `rgba(215, 16, 166, 0.8)`
 
 export default {
   BASE: {

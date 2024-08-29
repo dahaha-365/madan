@@ -240,13 +240,13 @@ export default {
     },
 
     th: {
-      border: `1px solid #dfdfdf`,
+      border: `1px solid #aaaaaa`,
       padding: `0.25em 0.5em`,
       color: `var(--el-text-color-regular)`,
     },
 
     td: {
-      border: `1px solid #dfdfdf`,
+      border: `1px solid #aaaaaa`,
       padding: `0.25em 0.5em`,
       color: `var(--el-text-color-regular)`,
     },

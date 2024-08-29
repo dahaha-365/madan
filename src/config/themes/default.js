@@ -15,7 +15,7 @@ export default {
       'margin': `2em auto 1em`,
       'padding': `0 1em`,
       'border-bottom': `2px solid rgba(0, 152, 116, 0.9)`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     // 二级标题样式
@@ -27,7 +27,7 @@ export default {
       'margin': `4em auto 2em`,
       'padding': `0 0.2em`,
       'background': `rgba(0, 152, 116, 0.9)`,
-      'color': `#fff`,
+      'color': `${baseColor}`,
     },
 
     // 三级标题样式
@@ -38,7 +38,7 @@ export default {
       'line-height': `1.2`,
       'padding-left': `8px`,
       'border-left': `3px solid rgba(0, 152, 116, 0.9)`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     // 四级标题样式
@@ -46,7 +46,7 @@ export default {
       'font-weight': `bold`,
       'font-size': `1em`,
       'margin': `2em 8px 0.5em`,
-      'color': `rgba(66, 185, 131, 0.9)`,
+      'color': `${baseColor}`,
     },
 
     // 段落样式
@@ -70,7 +70,7 @@ export default {
 
     blockquote_p: {
       'letter-spacing': `0.1em`,
-      'color': `rgb(80, 80, 80)`,
+      'color': `${baseColor}`,
       'font-size': `1em`,
       'display': `block`,
     },
@@ -98,25 +98,25 @@ export default {
     ol: {
       'margin-left': `0`,
       'padding-left': `1em`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     ul: {
       'margin-left': `0`,
       'padding-left': `1em`,
       'list-style': `circle`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     footnotes: {
       'margin': `0.5em 8px`,
       'font-size': `80%`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     figure: {
       margin: `1.5em 8px`,
-      color: `var(--el-text-color-regular)`,
+      color: `${baseColor}`,
     },
     hr: {
       'border-style': `solid`,
@@ -133,7 +133,7 @@ export default {
       'text-indent': `-1em`,
       'display': `block`,
       'margin': `0.2em 8px`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     codespan: {
@@ -164,13 +164,13 @@ export default {
       'border-collapse': `collapse`,
       'text-align': `center`,
       'margin': `1em 8px`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     thead: {
       'background': `rgba(0, 0, 0, 0.05)`,
       'font-weight': `bold`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     td: {
@@ -181,7 +181,7 @@ export default {
 
     footnote: {
       'font-size': `12px`,
-      'color': `var(--el-text-color-regular)`,
+      'color': `${baseColor}`,
     },
 
     figcaption: {
