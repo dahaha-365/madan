@@ -276,7 +276,6 @@ export default {
     }
     if (options?.color) {
       const stander = color(options?.color).rgb()
-      const lighten1 = color(options?.color).lighten(1).rgb()
       const alpha5 = color(options?.color).alpha(0.5).rgb()
       const alpha2 = color(options?.color).alpha(0.2).rgb()
       const alpha1 = color(options?.color).alpha(0.1).rgb()
@@ -297,7 +296,7 @@ export default {
 
       this.inline.strong = { ...this.inline.strong, ...{ color: `${stander}` } }
       this.inline.thead = { ...this.inline.thead, ...{ background: `${alpha1}` } }
-      this.inline.td = { ...this.inline.td, ...{ 'border-color': `${lighten1}` } }
+      this.inline.td = { ...this.inline.td, ...{ 'border-color': `${alpha5}` } }
       this.inline.codespan = { ...this.inline.codespan, ...{ background: `${alpha2}` } }
     }
 
