@@ -467,6 +467,7 @@ onMounted(() => {
 </template>
 
 <style lang="less" scoped>
+@import 'twemoji-colr-font/twemoji.css';
 @import url('../assets/less/app.less');
 </style>
 

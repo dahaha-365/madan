@@ -1,4 +1,3 @@
-@import "emoji-mart-vue-fast/css/emoji-mart.css";
 @nightBgColor: #333333;
 @nightPreviewColor: #1e1e1e;
 @nightHeaderColor: #3c3c3c;
@@ -220,7 +219,7 @@
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
   font-size: 14px;
   font-family: 'PingFang SC', BlinkMacSystemFont, Roboto, 'Helvetica Neue',
-    sans-serif !important;
+    sans-serif,'Twemoji' !important;
 }
 
 .CodeMirror-vscrollbar:focus {
@@ -242,4 +241,18 @@
   padding-top: 20px;
   padding-bottom: 20px;
   box-sizing: border-box;
+}
+
+.emoji-mart {
+  font-family: -apple-system, 'Twemoji', BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+}
+
+.emoji-type-native {
+  font-family: 'Twemoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Segoe UI',
+  'Apple Color Emoji', 'Twemoji Mozilla', 'Noto Color Emoji', 'EmojiOne Color',
+  'Android Emoji';
+}
+
+.emoji-mart-emoji {
+  text-shadow: @nightWhiteColor 0px 0px 1px;
 }

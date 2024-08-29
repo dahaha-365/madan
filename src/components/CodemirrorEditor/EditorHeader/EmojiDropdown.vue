@@ -61,10 +61,10 @@ function emojiSelected(emoji) {
       @click="props.clickTrigger()"
       @mouseenter="props.openDropdown()"
     >
-      Emoji 😀
+      Emoji <span class="emoji-type-native">😀</span>
     </DropdownMenuTrigger>
     <DropdownMenuContent>
-      <Picker :data="emojiIndex" set="apple" :i18n="emojiI18n" :per-line="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
+      <Picker :data="emojiIndex" set="apple" :native="true" :i18n="emojiI18n" :per-line="10" :color="null" title="Emoji键盘" emoji="grinning" @select="emojiSelected" />
     </DropdownMenuContent>
   </DropdownMenu>
 
