@@ -16,6 +16,19 @@ export const useStore = defineStore(`store`, () => {
   const isDark = useDark()
   const toggleDark = useToggle(isDark)
 
+  // 是否开启行号
+  const isLineNumber = useStorage(`isLineNumber`, false)
+  // const toggleLineNumber = useToggle(isLineNumber)
+  const toggleLineNumber = () => {
+    useToggle(isLineNumber)
+    console.log(isLineNumber.value)
+    console.log(useToggle(isLineNumber))
+    // eslint-disable-next-line no-use-before-define
+    editor.value.setOption(`lineNumbers`, isLineNumber.value)
+    // eslint-disable-next-line no-use-before-define
+    console.log(editor.value.setOption(`lineNumbers`, isLineNumber.value))
+  }
+
   // 是否开启 Mac 代码块
   const isMacCodeBlock = useStorage(`isMacCodeBlock`, true)
   const toggleMacCodeBlock = useToggle(isMacCodeBlock)
@@ -438,6 +451,9 @@ export const useStore = defineStore(`store`, () => {
 
     isDark,
     toggleDark,
+
+    isLineNumber,
+    toggleLineNumber,
 
     isEditOnLeft,
     toggleEditOnLeft,
