@@ -31,12 +31,12 @@ const emit = defineEmits([
   `endCopy`,
 ])
 
-let envMode = import.meta.env.MODE
+const envMode = ref(import.meta.env.MODE)
 
 if (import.meta.env.PROD) {
-  fetch(`https://dahaha-365.github.io/madan/revision.txt`).then((res) => {
-    console.log(res.text())
-    envMode = res.text()
+  fetch(`https://dahaha-365.github.io/madan/revision.txt`).then(async (revision) => {
+    envMode.value = await revision.text()
+    console.log(envMode.value)
   })
 }
 
@@ -236,7 +236,7 @@ function updateOpen(isOpen) {
       />
     </div>
     <el-button plain type="info">
-      {{ envMode }}
+      版本号：{{ envMode }}
     </el-button>
 
     <el-button plain type="primary" @click="copy">
