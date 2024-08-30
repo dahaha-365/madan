@@ -31,6 +31,12 @@ const emit = defineEmits([
   `endCopy`,
 ])
 
+let envMode = import.meta.env.MODE
+
+fetch(`https://dahaha-365.github.io/madan/rev`).then((res) => {
+  envMode = res.text()
+})
+
 const formatItems = [
   {
     label: `加粗`,
@@ -226,6 +232,10 @@ function updateOpen(isOpen) {
         :open-dropdown="openDropdown(5)" :update-open="updateOpen"
       />
     </div>
+    <el-button plain type="info">
+      {{ envMode }}
+    </el-button>
+
     <el-button plain type="primary" @click="copy">
       复制
     </el-button>
