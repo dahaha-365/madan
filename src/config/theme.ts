@@ -1,6 +1,6 @@
-import defaultTheme from './themes/default.js'
-import graceTheme from './themes/grace.js'
-import modernTheme from './themes/modern.js'
+import defaultTheme from './themes/default.ts'
+import graceTheme from './themes/grace.ts'
+import modernTheme from './themes/modern.ts'
 
 interface Theme {
   BASE: Record<string, string | number>

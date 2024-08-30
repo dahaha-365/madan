@@ -265,7 +265,7 @@ export default {
       'font-size': `0.8em`,
     },
   },
-  custom(options) {
+  custom(options: Record<string, any>) {
     if (options?.fontSize) {
       this.block.h1 = { ...this.block.h1, ...{ 'font-size': `${options.fontSize * 1.8}px` } }
       this.block.h2 = { ...this.block.h2, ...{ 'font-size': `${options.fontSize * 1.6}px` } }
