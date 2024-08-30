@@ -56,13 +56,6 @@ export const useStore = defineStore(`store`, () => {
   // 编辑区域内容
   const editorContent = useStorage(`__editor_content`, formatDoc(DEFAULT_CONTENT))
 
-  // 是否开启行号
-  const isLineNumber = useStorage(`isLineNumber`, false)
-
-  const toggleLineNumber = () => {
-    useToggle(isLineNumber)()
-    editor.value.setOption(`lineNumbers`, isLineNumber.value)
-  }
   const initEditorContent = () => {
     ElMessageBox.confirm(
       `此操作将会把文档内容还原成初始文档，是否继续操作？`,
@@ -445,9 +438,6 @@ export const useStore = defineStore(`store`, () => {
 
     isDark,
     toggleDark,
-
-    isLineNumber,
-    toggleLineNumber,
 
     isEditOnLeft,
     toggleEditOnLeft,

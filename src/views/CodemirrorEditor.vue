@@ -33,7 +33,7 @@ import {
 import 'codemirror/mode/javascript/javascript'
 
 const store = useStore()
-const { output, editor, editorContent, isShowCssEditor, isLineNumber } = storeToRefs(store)
+const { output, editor, editorContent, isShowCssEditor } = storeToRefs(store)
 
 const {
   editorRefresh,
@@ -192,7 +192,6 @@ function initEditor() {
   editor.value = CodeMirror.fromTextArea(editorDom, {
     mode: `text/x-markdown`,
     theme: `xq-light`,
-    lineNumbers: isLineNumber.value,
     lineWrapping: true,
     styleActiveLine: true,
     autoCloseBrackets: true,

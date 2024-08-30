@@ -17,13 +17,11 @@ const store = useStore()
 
 const {
   isDark,
-  isLineNumber,
   isEditOnLeft,
 } = storeToRefs(store)
 
 const {
   toggleDark,
-  toggleLineNumber,
   toggleEditOnLeft,
   initEditorContent,
   exportEditorContent2HTML,
@@ -70,12 +68,6 @@ const {
           <ElIconCheck />
         </el-icon>
         深色模式
-      </DropdownMenuItem>
-      <DropdownMenuItem @click="toggleLineNumber()">
-        <el-icon class="mr-2 h-4 w-4" :class="{ 'opacity-0': !isLineNumber }">
-          <ElIconCheck />
-        </el-icon>
-        显示行号
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <DropdownMenuItem @click="toggleEditOnLeft()">
