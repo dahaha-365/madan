@@ -33,9 +33,12 @@ const emit = defineEmits([
 
 let envMode = import.meta.env.MODE
 
-fetch(`https://dahaha-365.github.io/madan/rev`).then((res) => {
-  envMode = res.text()
-})
+if (import.meta.env.PROD) {
+  fetch(`https://dahaha-365.github.io/madan/revision.txt`).then((res) => {
+    console.log(res.text())
+    envMode = res.text()
+  })
+}
 
 const formatItems = [
   {
